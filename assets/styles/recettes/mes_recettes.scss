@@ -1,0 +1,33 @@
+.mes-recettes {
+
+  h1 {
+    margin-bottom: 0;
+  }
+  p {
+    font-weight: bold;
+    font-family: Montserrat;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pagination {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    :nth-child(1) {grid-area: first;}
+    :nth-child(2) {grid-area: second;}
+    :nth-child(3) {grid-area: third;}
+    :nth-child(4) {grid-area: fourth;}
+  }
+}
+
+@media only screen and (max-width: 590px) {
+  .recettes {
+    .pagination {
+      flex-direction: column;
+    }
+  }
+}

@@ -25,7 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true, nullable: false)]
     #[Assert\Email]
     #[Assert\NotNull]
-    #[Groups(['api:show:user', 'api:show:recette', 'api:show:ingredient'])]
+    #[Groups(['api:show:user', 'api:show:recettes', 'api:show:ingredient'])]
     private ?string $email;
 
     #[ORM\Column]

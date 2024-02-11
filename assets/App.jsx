@@ -11,6 +11,7 @@ import { ResetPassword } from "./pages/ResetPassword";
 import { ReinitPassword } from "./pages/ReinitPassword";
 import { Recettes } from "./pages/recettes/Recettes";
 import { MesRecettes } from "./pages/recettes/MesRecettes";
+import { RecetteDetails } from "./pages/recettes/RecetteDetails";
 
 function App () {
 
@@ -32,6 +33,7 @@ function App () {
                <Route path={'/contact'} element={<Contact />} />
                <Route path={'/recettes'} element={<Recettes />} />
                <Route path={'/mes-recettes'} element={<MesRecettes />} />
+               <Route path={'/recette/:name'} element={<RecetteDetails />} />
                <Route path={'/*'} element={<NotFound />} />
             </Route>
 

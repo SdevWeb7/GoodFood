@@ -21,11 +21,11 @@ class Ingredient
 
     #[ORM\Column(type: 'string')]
     #[Assert\Length(min: 2, max: 30)]
-    #[Groups(['api:show:user', 'api:show:recette', 'api:show:ingredient'])]
+    #[Groups(['api:show:user', 'api:show:recettes', 'api:show:ingredient'])]
     private ?string $name = null;
 
    #[ORM\Column(type: 'string')]
-   #[Groups(['api:show:user', 'api:show:recette', 'api:show:ingredient'])]
+   #[Groups(['api:show:user', 'api:show:recettes', 'api:show:ingredient'])]
    private ?string $quantity = null;
 
    #[ORM\ManyToMany(targetEntity: Recette::class, mappedBy: 'Ingredients')]
