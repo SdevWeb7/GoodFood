@@ -39,7 +39,7 @@ export function Menu () {
                initial={'hidden'}
                exit={'hidden'}
                animate={'visible'}
-               transition={{staggerChildren: .15}}>
+               transition={{delayChildren: .4, staggerChildren: .15}}>
 
                <NavLink className={'navlink'} to={'/recettes'}>Recettes</NavLink>
 

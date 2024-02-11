@@ -47,8 +47,12 @@ export function Recettes () {
          {recettes.length > 0 ?
             recettes.map(recipe => <NavLink to={`/recette/${recipe.id}`} key={uuidv4()} className={'recette'}>
                <p className={'title'}>{recipe.name}</p>
-               <img src={recipe.image ?? 'http://via.placeholder.com/250x150'} alt="recette-image" />
+
                <p>{recipe.description}</p>
+
+               <img src={recipe.image ?? 'http://via.placeholder.com/250x150'} alt="recette-image" />
+
+               <p>Créé par: {recipe.user}</p>
             </NavLink>) :
             <p>Aucune Recette, ajoutez-en !</p>}
          </div>

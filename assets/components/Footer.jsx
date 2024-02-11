@@ -31,7 +31,7 @@ export function Footer () {
             onClick={handleTheme}
             data-isdark={theme === 'dark'}
             className="btn-theme">
-            <motion.div layout className="btn"></motion.div>
+            <motion.div layout></motion.div>
          </motion.div>
       </motion.footer>
    )

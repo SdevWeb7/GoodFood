@@ -19,7 +19,7 @@ export function RecetteEdit () {
       window.location = '/'
    } else {
       return (
-         <div className={'recettes-details'}>
+         <div className={'recette-edit'}>
             <h1>Edition Recette {name}</h1>
          </div>)
    }

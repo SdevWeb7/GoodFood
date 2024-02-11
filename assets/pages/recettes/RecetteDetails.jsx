@@ -23,16 +23,23 @@ export function RecetteDetails () {
 
 
    return (
-      <div className={'recettes-details'}>
+      <article className={'recette-details'}>
 
          {Object.entries(recette).length > 0 ?
-         <article className={'recette-container'}>
-            <h1>Recette {recette.name}</h1>
+         <><h1>{recette.name}</h1>
             <p>{recette.description}</p>
+            <hr/>
             <img src={recette.image ?? 'http://via.placeholder.com/250x150'} alt="recette-image" />
+            <hr/>
+            <p>Ingredients: {recette.Ingredients.map(ing => ing.name+' ')}</p>
+            <hr/>
             <p>{recette.process}</p>
-            <p>{recette.duration}</p>
-         </article> : <h1>Recette Introuvable</h1>}
-      </div>
+            <hr/>
+            <p>Temps de préparation: {recette.duration} minute(s)</p>
+            <hr/>
+            <p>Informations complémentaires: {recette.more}</p>
+            <p>Créé par: {recette.user ?? 'Anonyme'}</p></> :
+            <h1>Recette Introuvable</h1>}
+      </article>
    )
 }
