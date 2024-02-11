@@ -12,6 +12,7 @@ import { ReinitPassword } from "./pages/ReinitPassword";
 import { Recettes } from "./pages/recettes/Recettes";
 import { MesRecettes } from "./pages/recettes/MesRecettes";
 import { RecetteDetails } from "./pages/recettes/RecetteDetails";
+import { RecetteEdit } from "./pages/recettes/RecetteEdit";
 
 function App () {
 
@@ -33,7 +34,8 @@ function App () {
                <Route path={'/contact'} element={<Contact />} />
                <Route path={'/recettes'} element={<Recettes />} />
                <Route path={'/mes-recettes'} element={<MesRecettes />} />
-               <Route path={'/recette/:name'} element={<RecetteDetails />} />
+               <Route path={'/recette/:id'} element={<RecetteDetails />} />
+               <Route path={'/recette/editer/:name'} element={<RecetteEdit />} />
                <Route path={'/*'} element={<NotFound />} />
             </Route>
 
