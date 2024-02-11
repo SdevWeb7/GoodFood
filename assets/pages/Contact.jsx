@@ -38,11 +38,11 @@ export function Contact () {
       <>
          <Fader>
             <form className={'auth-form'}>
-               <h1>Me contacter</h1>
+               <h1>Contact</h1>
 
                {symfonyError.length > 1 && <p>{symfonyError}</p>}
 
-               <input placeholder={'Email Address'} {...register("email", { required: true })} autoComplete={'current-email'} />
+               <input placeholder={'Votre adresse e-mail'} {...register("email", { required: true })} autoComplete={'current-email'} />
                {errors.email && <span>{errors.email.message}</span>}
 
                <textarea placeholder={'Votre Message'}  {...register("message", { required: true })} />

@@ -1,8 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Linkedin } from "../svg/Linkedin";
-import { Github } from "../svg/Github";
-import { FrontendMentor } from "../svg/FrontendMentor";
 import { motion } from "framer-motion";
 import { useScrollY } from "../hooks/useScrollY";
 import { footerVariants } from "../utils";
@@ -25,16 +22,7 @@ export function Footer () {
 
          <nav className="navbar">
             <Link to={'https://www.linkedin.com/in/steven-durand-1486b82a1/'} target={'_blank'}>
-               <Linkedin />
-            </Link>
-
-            <Link to={'https://github.com/SdevWeb7'} target={'_blank'}>
-               <Github />
-            </Link>
-
-
-            <Link to={'https://www.frontendmentor.io/profile/Veustyle'} target={'_blank'}>
-               <FrontendMentor />
+               Faire un don <span style={{fontSize: '1.5rem'}}>🫶</span>
             </Link>
 
          </nav>

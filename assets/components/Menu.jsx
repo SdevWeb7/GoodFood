@@ -41,6 +41,10 @@ export function Menu () {
                animate={'visible'}
                transition={{staggerChildren: .15}}>
 
+               <NavLink className={'navlink'} to={'/recettes'}>Recettes</NavLink>
+
+               {user && Object.keys(user).length > 0 &&
+                  <NavLink className={'navlink'} to={'/mes-recettes'}>Mes recettes</NavLink>}
 
                <motion.li variants={linksVariants}>
                   <NavLink to={"/contact"}>Contact</NavLink>

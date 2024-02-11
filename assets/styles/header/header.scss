@@ -4,7 +4,7 @@
   background-color: var(--color-bg2);
   color: var(--color-txt2);
   padding: 0 1rem;
-  box-shadow: 0 0 10px -3px var(--color-txt2);
+  box-shadow: 0 0 2px 2px var(--color-bg2);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -26,21 +26,25 @@
     align-items: center;
     align-content: center;
     opacity: 1;
+    font-size: 1rem;
 
     p {
-      font-family: Designer;
-      font-size: 1.3rem;
+      font-family: Valoon;
+      font-size: 1.5rem;
+      padding-top: .5rem;
+      :nth-child(1), :nth-child(3) { color: orange
+      }
+      :nth-child(2) {color: #40f540;
+      }
     }
     .logo {
-      font-family: Planets;
-      font-size: 2rem;
       margin-right: .4rem;
-      transform: translateY(2px);
+      transform: translateY(-2px) rotate(-44deg);
     }
   }
 
   .navlink {
-    padding-top: .3rem;
+    padding-top: .6rem;
   }
 
 }

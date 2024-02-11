@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { burgerVariants, closeVariants } from "../utils";
 import { Menu } from "./Menu";
 import { useAppStore } from "../store";
-import { IconBurger } from "../svg/IconBurger";
 import { IconClose } from "../svg/IconClose";
 
 export function Burger () {
@@ -43,7 +42,7 @@ export function Burger () {
                   animate={isOpenMenu ? 'hidden' : "visible"}
                   variants={burgerVariants}
                   transition={{duration: .5}}>
-                  <IconBurger />
+                  🍅
                </motion.div>}
          </AnimatePresence>
 

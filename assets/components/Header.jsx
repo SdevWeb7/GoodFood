@@ -7,6 +7,7 @@ import { headerVariants } from "../utils";
 import { useAppStore } from "../store";
 
 export function Header () {
+   const user = useAppStore.use.user()
    const { isScrolledBot } = useScrollY()
    const isOpenMenu = useAppStore.use.isOpenMenu()
 
@@ -21,9 +22,15 @@ export function Header () {
 
          <nav className="navbar">
             <NavLink to={'/'} className={'logo-container'}>
-               <h1 className={'logo'}>J</h1>
-               <p>sdevweb</p>
+               <h1 className={'logo'}>🥕</h1>
+               <p><span>G</span>ood<span>-</span><span>F</span>ood</p>
             </NavLink>
+
+
+            <NavLink className={'navlink'} to={'/recettes'}>Recettes</NavLink>
+
+            {user && Object.keys(user).length > 0 &&
+               <NavLink className={'navlink'} to={'/mes-recettes'}>Mes recettes</NavLink>}
 
             <NavLink className={'navlink'} to={'/contact'}>Contact</NavLink>
          </nav>

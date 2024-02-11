@@ -24,6 +24,7 @@ class LoginController extends AbstractController
       if (!$this->getUser()) {
          return $this->json([]);
       }
+
       return $this->json($this->getUser(), 200, [], ['groups' => 'api:show:user']);
    }
 

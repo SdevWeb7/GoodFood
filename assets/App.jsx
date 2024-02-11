@@ -9,6 +9,8 @@ import { Subscribe } from "./pages/Subscribe";
 import { Login } from "./pages/Login";
 import { ResetPassword } from "./pages/ResetPassword";
 import { ReinitPassword } from "./pages/ReinitPassword";
+import { Recettes } from "./pages/recettes/Recettes";
+import { MesRecettes } from "./pages/recettes/MesRecettes";
 
 function App () {
 
@@ -26,8 +28,10 @@ function App () {
                <Route path={'/:token'} element={<ReinitPassword />} />
                <Route path={'/subscribe'} element={<Subscribe />} />
                <Route path={'/login'} element={<Login />} />
-               <Route path={'/reset_password'} element={<ResetPassword />} />
+               <Route path={'/reset-password'} element={<ResetPassword />} />
                <Route path={'/contact'} element={<Contact />} />
+               <Route path={'/recettes'} element={<Recettes />} />
+               <Route path={'/mes-recettes'} element={<MesRecettes />} />
                <Route path={'/*'} element={<NotFound />} />
             </Route>
 
