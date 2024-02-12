@@ -38,7 +38,8 @@ export function RecetteDetails () {
             <p>Temps de préparation: {recette.duration} minute(s)</p>
             <hr/>
             <p>Informations complémentaires: {recette.more}</p>
-            <p>Créé par: {recette.user ?? 'Anonyme'}</p></> :
+            <hr/>
+            <p>Créé par: {recette.user ? recette.user.email : 'Anonyme'}</p></> :
             <h1>Recette Introuvable</h1>}
       </article>
    )

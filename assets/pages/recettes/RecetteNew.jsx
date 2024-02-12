@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import eventBus from "../../hooks/EventBus";
-import { useParams } from "react-router-dom";
 import { Spinner } from "../../components/Spinner";
 import { useAppStore } from "../../store";
 
-export function RecetteEdit () {
+export function RecetteNew () {
    const user = useAppStore.use.user()
-   const { id } = useParams()
-
-   console.log(id)
 
    useEffect(() => {
 
@@ -21,8 +17,8 @@ export function RecetteEdit () {
       window.location = '/'
    } else {
       return (
-         <div className={'recette-edit'}>
-            <h1>Edition Recette {name}</h1>
+         <div className={'recette-new'}>
+            <h1>Création d'une recette</h1>
          </div>)
    }
 }

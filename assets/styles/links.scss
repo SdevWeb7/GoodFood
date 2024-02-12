@@ -35,4 +35,10 @@ a, a:visited {
   border-radius: .4rem;
   padding: .7rem 1.2rem;
   cursor: pointer;
+
+  opacity: .8;
+
+  &:hover {
+    opacity: 1;
+  }
 }

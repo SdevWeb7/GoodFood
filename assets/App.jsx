@@ -13,6 +13,7 @@ import { Recettes } from "./pages/recettes/Recettes";
 import { MesRecettes } from "./pages/recettes/MesRecettes";
 import { RecetteDetails } from "./pages/recettes/RecetteDetails";
 import { RecetteEdit } from "./pages/recettes/RecetteEdit";
+import { RecetteNew } from "./pages/recettes/RecetteNew";
 
 function App () {
 
@@ -26,17 +27,18 @@ function App () {
       <BrowserRouter>
          <Routes>
             <Route path={'/'} element={<Layout />}>
-               <Route path={'/'} element={<Home />} />
-               <Route path={'/:token'} element={<ReinitPassword />} />
-               <Route path={'/subscribe'} element={<Subscribe />} />
-               <Route path={'/login'} element={<Login />} />
-               <Route path={'/reset-password'} element={<ResetPassword />} />
-               <Route path={'/contact'} element={<Contact />} />
+               <Route path={''} element={<Home />} />
+               <Route path={':token'} element={<ReinitPassword />} />
+               <Route path={'subscribe'} element={<Subscribe />} />
+               <Route path={'login'} element={<Login />} />
+               <Route path={'reset-password'} element={<ResetPassword />} />
+               <Route path={'contact'} element={<Contact />} />
                <Route path={'/recettes'} element={<Recettes />} />
-               <Route path={'/mes-recettes'} element={<MesRecettes />} />
-               <Route path={'/recette/:id'} element={<RecetteDetails />} />
-               <Route path={'/recette/editer/:name'} element={<RecetteEdit />} />
-               <Route path={'/*'} element={<NotFound />} />
+               <Route path={'mes-recettes'} element={<MesRecettes />} />
+               <Route path={'recette/creer'} element={<RecetteNew />} />
+               <Route path={'recette/details/:id'} element={<RecetteDetails />} />
+               <Route path={'recette/editer/:id'} element={<RecetteEdit />} />
+               <Route path={'*'} element={<NotFound />} />
             </Route>
 
          </Routes>

@@ -4,6 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { NavLink } from "react-router-dom";
 import { useAppStore } from "../../store";
 import { Spinner } from "../../components/Spinner";
+import { Modify } from "../../svg/Modify";
+import { Delete } from "../../svg/Delete";
+import { Add } from "../../svg/Add";
 
 export function MesRecettes () {
    const user = useAppStore.use.user()
@@ -28,6 +31,29 @@ export function MesRecettes () {
          .catch(e => console.log(e))
    }, [page])
 
+   const handleDelete = (e, id) => {
+      e.preventDefault()
+      if (confirm('Etes-vous sur de vouloir supprimer la recette ?')) {
+
+         fetch(`/api_delete_recette/${id}`, {
+            method: 'POST'
+         }).then(r => {
+            if (!r.ok) {
+               eventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
+               throw new Error('Problème serveur')
+            }
+            return r.json()
+         }).then(datas => {
+            if (datas.error) {
+               eventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
+               throw new Error('Problème serveur')
+            }
+            setRecettes(recettes.filter(r => r.id !== id))
+         }).catch(e => console.log(e))
+      }
+   };
+
+
    if (user === null) {
       return <Spinner />
    } else if (Object.keys(user).length === 0) {
@@ -36,7 +62,10 @@ export function MesRecettes () {
       return (
          <div className={'recettes'}>
             <h1>Mes recettes</h1>
-            <h2>{totalRecettes} recettes (Page {page})</h2>
+            <h2>
+               <NavLink className={'btn-add'} to={'/recette/creer'}>+</NavLink>
+               {totalRecettes} recettes (Page {page} / {nombrePages})
+            </h2>
 
             <nav className="pagination">
                {page > 1 &&
@@ -52,11 +81,25 @@ export function MesRecettes () {
             <div className="recettes-container">
 
                {recettes.length > 0 ?
-                  recettes.map(recipe => <NavLink to={`/recette/${recipe.id}`} key={uuidv4()} className={'recette'}>
+                  recettes.map(recipe => <article key={uuidv4()} className={'recette'}>
+
+                     <div className="actions">
+                        <NavLink to={`/recette/editer/${recipe.id}`}>
+                           <Modify />
+                        </NavLink>
+                        <NavLink>
+                           <Delete onClick={e => handleDelete(e, recipe.id)} />
+                        </NavLink>
+                     </div>
+
                      <p className={'title'}>{recipe.name}</p>
-                     <img src={recipe.image ?? 'http://via.placeholder.com/250x150'} alt="recette-image" />
+
+                     <NavLink to={`/recette/details/${recipe.id}`}>
+                        <img src={recipe.image ?? 'http://via.placeholder.com/250x150'} alt="recette-image" />
+                     </NavLink>
+
                      <p>{recipe.description}</p>
-                  </NavLink>) :
+                  </article>) :
                   <p>Aucune Recette, ajoutez-en !</p>}
             </div>
          </div>)
