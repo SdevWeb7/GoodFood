@@ -6,7 +6,6 @@ import { useAppStore } from "../../store";
 import { Spinner } from "../../components/Spinner";
 import { Modify } from "../../svg/Modify";
 import { Delete } from "../../svg/Delete";
-import { Add } from "../../svg/Add";
 
 export function MesRecettes () {
    const user = useAppStore.use.user()
@@ -34,7 +33,6 @@ export function MesRecettes () {
    const handleDelete = (e, id) => {
       e.preventDefault()
       if (confirm('Etes-vous sur de vouloir supprimer la recette ?')) {
-
          fetch(`/api_delete_recette/${id}`, {
             method: 'POST'
          }).then(r => {
@@ -95,7 +93,7 @@ export function MesRecettes () {
                      <p className={'title'}>{recipe.name}</p>
 
                      <NavLink to={`/recette/details/${recipe.id}`}>
-                        <img src={recipe.image ?? 'http://via.placeholder.com/250x150'} alt="recette-image" />
+                        <img src={recipe.image ? `/images/recettes/${recipe.image}` : '/images/antarctique.jpg'} alt="recette-image" />
                      </NavLink>
 
                      <p>{recipe.description}</p>

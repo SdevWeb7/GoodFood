@@ -35,7 +35,7 @@ export function ResetPassword () {
          {errors.email && <span>{errors.email.message}</span>}
 
 
-         <input type={"submit"} className={!isValid || isSubmitting ? '' : 'submit-valid'} onClick={handleSubmit(onSubmit)} value={'Faire la demande'} />
+         <input type={"submit"} className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} onClick={handleSubmit(onSubmit)} value={'Faire la demande'} />
 
       </form>
       </Fader>

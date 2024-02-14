@@ -29,7 +29,7 @@ export function Recettes () {
    return (
       <div className={'recettes'}>
          <h1>Recettes</h1>
-         <h2>{totalRecettes} recettes (Page {page})</h2>
+         <h2>{totalRecettes} recettes (Page {page} / {nombrePages})</h2>
 
          <nav className="pagination">
             {page > 1 &&
@@ -45,15 +45,17 @@ export function Recettes () {
          <div className="recettes-container">
 
          {recettes.length > 0 ?
-            recettes.map(recipe => <NavLink to={`/recette/details/${recipe.id}`} key={uuidv4()} className={'recette'}>
+            recettes.map(recipe => <article key={uuidv4()} className={'recette'}>
                <p className={'title'}>{recipe.name}</p>
 
                <p>{recipe.description}</p>
 
-               <img src={recipe.image ?? 'http://via.placeholder.com/250x150'} alt="recette-image" />
+               <NavLink to={`/recette/details/${recipe.id}`}>
+                  <img src={recipe.image ? `/images/recettes/${recipe.image}` : '/images/antarctique.jpg'} alt="recette-image" />
+               </NavLink>
 
                <p>Créé par: {recipe.user ? recipe.user.email : 'Anonyme'}</p>
-            </NavLink>) :
+            </article>) :
             <p>Aucune Recette, ajoutez-en !</p>}
          </div>
       </div>

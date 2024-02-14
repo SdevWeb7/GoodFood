@@ -21,7 +21,7 @@ class Recette
 
     #[ORM\ManyToMany(targetEntity: Ingredient::class, inversedBy: 'recettes')]
     #[Groups(['api:show:user', 'api:show:recette'])]
-    private Collection $Ingredients;
+    private Collection $ingredients;
 
     #[ORM\ManyToOne(inversedBy: 'recettes')]
     #[Groups(['api:show:recette', 'api:show:ingredient'])]
@@ -48,11 +48,12 @@ class Recette
     private ?string $more = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['api:show:user', 'api:show:recette', 'api:show:ingredient'])]
     private ?string $image = null;
 
     public function __construct()
     {
-        $this->Ingredients = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,13 +66,13 @@ class Recette
      */
     public function getIngredients(): Collection
     {
-        return $this->Ingredients;
+        return $this->ingredients;
     }
 
     public function addIngredient(Ingredient $ingredient): static
     {
-        if (!$this->Ingredients->contains($ingredient)) {
-            $this->Ingredients->add($ingredient);
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
         }
 
         return $this;
@@ -79,7 +80,7 @@ class Recette
 
     public function removeIngredient(Ingredient $ingredient): static
     {
-        $this->Ingredients->removeElement($ingredient);
+        $this->ingredients->removeElement($ingredient);
 
         return $this;
     }

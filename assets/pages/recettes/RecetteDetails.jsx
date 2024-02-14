@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import eventBus from "../../hooks/EventBus";
 import { useParams } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 export function RecetteDetails () {
    const { id } = useParams()
@@ -29,9 +30,12 @@ export function RecetteDetails () {
          <><h1>{recette.name}</h1>
             <p>{recette.description}</p>
             <hr/>
-            <img src={recette.image ?? 'http://via.placeholder.com/250x150'} alt="recette-image" />
+            <img src={recette.image ? `/images/recettes/${recette.image}` : '/images/antarctique.jpg'} alt="recette-image" />
             <hr/>
-            <p>Ingredients: {recette.Ingredients.map(ing => ing.name+' ')}</p>
+            <div>
+               <p>Ingredients:</p>
+               {recette.ingredients?.map(ing => <p key={uuidv4()}>{ing.name} {ing.quantity}</p>)}
+            </div>
             <hr/>
             <p>{recette.process}</p>
             <hr/>

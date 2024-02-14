@@ -59,7 +59,7 @@ export function Subscribe () {
                    autoComplete={'current-password'} {...register("password", {required: true})} />
             {errors.password && <span>{errors.password.message}</span>}
 
-            <input type={"submit"} className={! isValid || isSubmitting ? '' : 'submit-valid'}
+            <input type={"submit"} className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`}
                    onClick={handleSubmit(onSubmit)} value={'Inscription'}/>
 
          </form>

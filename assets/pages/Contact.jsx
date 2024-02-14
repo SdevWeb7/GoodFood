@@ -48,7 +48,7 @@ export function Contact () {
                <textarea placeholder={'Votre Message'}  {...register("message", { required: true })} />
                {errors.message && <span>{errors.message.message}</span>}
 
-               <input type={"submit"} className={!isValid || isSubmitting ? '' : 'submit-valid'} onClick={handleSubmit(onSubmit)} value={'Envoyer'} />
+               <input type={"submit"} className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} onClick={handleSubmit(onSubmit)} value={'Envoyer'} />
             </form>
          </Fader>
       </>

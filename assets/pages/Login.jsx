@@ -56,7 +56,7 @@ export function Login () {
             <input type={'password'} placeholder={'Mot de passe'} autoComplete={'current-password'} {...register("password", { required: true })} />
             {errors.password && <span>{errors.password.message}</span>}
 
-            <input type={"submit"} className={!isValid || isSubmitting ? '' : 'submit-valid'} onClick={handleSubmit(onSubmit)} value={'Connexion'} />
+            <input type={"submit"} className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} onClick={handleSubmit(onSubmit)} value={'Connexion'} />
             <a href="/reset-password">Mot de passe oublié</a>
 
          </form>

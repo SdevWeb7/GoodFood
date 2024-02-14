@@ -53,7 +53,7 @@ export function ReinitPassword () {
             type={"submit"}
             onClick={handleSubmit(onSubmit)}
             value={'Changer le mot de passe'}
-            className={!isValid || isSubmitting ? '' : 'submit-valid'} />
+            className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} />
 
       </form>
       </Fader>

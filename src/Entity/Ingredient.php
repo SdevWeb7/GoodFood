@@ -6,12 +6,10 @@ use App\Repository\IngredientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
-#[UniqueEntity(fields: ['name'], message: 'Cet ingrédient existe déjà.')]
 class Ingredient
 {
     #[ORM\Id]
@@ -28,7 +26,7 @@ class Ingredient
    #[Groups(['api:show:user', 'api:show:recette', 'api:show:ingredient'])]
    private ?string $quantity = null;
 
-   #[ORM\ManyToMany(targetEntity: Recette::class, mappedBy: 'Ingredients')]
+   #[ORM\ManyToMany(targetEntity: Recette::class, mappedBy: 'ingredients')]
    #[Groups(['api:show:ingredient'])]
    private Collection $recettes;
 
