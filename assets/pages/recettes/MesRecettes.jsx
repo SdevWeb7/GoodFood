@@ -6,6 +6,7 @@ import { useAppStore } from "../../store";
 import { Spinner } from "../../components/Spinner";
 import { Modify } from "../../svg/Modify";
 import { Delete } from "../../svg/Delete";
+import { Paginator } from "../../components/Paginator";
 
 export function MesRecettes () {
    const user = useAppStore.use.user()
@@ -13,7 +14,7 @@ export function MesRecettes () {
    const [page, setPage] = useState(1)
    const [totalRecettes, setTotalRecettes] = useState(0)
    const [nombrePages, setNombrePages] = useState(0)
-   const [perPage, setPerPage] = useState(5)
+   const [perPage, setPerPage] = useState(6)
 
    useEffect(() => {
       fetch(`/api_mes_recettes/${page}/${perPage}`).then(r => {
@@ -23,11 +24,12 @@ export function MesRecettes () {
          }
          return r.json()
       }).then(datas => {
+         if (Object.entries(datas).length > 0) {
             setRecettes(datas.recettes)
             setTotalRecettes(datas.totalRecettes)
             setNombrePages(Math.ceil(datas.totalRecettes / perPage))
-         })
-         .catch(e => console.log(e))
+         }
+      }).catch(e => console.log(e))
    }, [page])
 
    const handleDelete = (e, id) => {
@@ -58,48 +60,54 @@ export function MesRecettes () {
       window.location = '/'
    } else {
       return (
-         <div className={'recettes'}>
+         <section className={'recettes'}>
             <h1>Mes recettes</h1>
             <h2>
-               <NavLink className={'btn-add'} to={'/recette/creer'}>+</NavLink>
+               <NavLink
+                  className={'btn btn-add'}
+                  to={'/recette/creer'}>+</NavLink>
+
                {totalRecettes} recettes (Page {page} / {nombrePages})
             </h2>
 
-            <nav className="pagination">
-               {page > 1 &&
-                  <><button className={'btn'} onClick={() => setPage(1)}>Première Page</button>
-                     <button className={'btn'} onClick={() => setPage(p => p > 1 ? p - 1 : p)}>Page Précédente</button></>}
 
-               {page < nombrePages &&
-                  <><button className={'btn'} onClick={() => setPage(p => p < nombrePages ? p + 1 : nombrePages)}>Page Suivante</button>
-                     <button className={'btn'} onClick={() => setPage(nombrePages)}>Dernière Page ({nombrePages})</button></>}
-            </nav>
+            <Paginator
+               page={page}
+               setPage={setPage}
+               nombrePages={nombrePages} />
 
 
             <div className="recettes-container">
-
                {recettes.length > 0 ?
-                  recettes.map(recipe => <article key={uuidv4()} className={'recette'}>
+                  recettes.map(recipe =>
+                     <article key={uuidv4()} className={'recette'}>
 
                      <div className="actions">
                         <NavLink to={`/recette/editer/${recipe.id}`}>
                            <Modify />
                         </NavLink>
+
                         <NavLink>
-                           <Delete onClick={e => handleDelete(e, recipe.id)} />
+                           <Delete
+                              onClick={e => handleDelete(e, recipe.id)} />
                         </NavLink>
                      </div>
 
                      <p className={'title'}>{recipe.name}</p>
 
-                     <NavLink to={`/recette/details/${recipe.id}`}>
-                        <img src={recipe.image ? `/images/recettes/${recipe.image}` : '/images/antarctique.jpg'} alt="recette-image" />
+                     <NavLink
+                        to={`/recette/details/${recipe.id}`}>
+                        <img
+                           src={recipe.image ?
+                              `/images/recettes/${recipe.image}` :
+                              '/images/antarctique.jpg'}
+                           alt="recette-image" />
                      </NavLink>
 
                      <p>{recipe.description}</p>
-                  </article>) :
-                  <p>Aucune Recette, ajoutez-en !</p>}
+
+                  </article>) : <p>Aucune Recette, ajoutez-en !</p>}
             </div>
-         </div>)
+         </section>)
    }
 }

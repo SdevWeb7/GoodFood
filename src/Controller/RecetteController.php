@@ -89,10 +89,12 @@ class RecetteController extends AbstractController
       }
 
       $image = $request->files->get("image");
-      $fileName = md5(uniqid()) . '.' . $image->guessExtension();
-      $image->move($this->getParameter('imagesRecettes'), $fileName);
+      if ($image) {
+         $fileName = md5(uniqid()) . '.' . $image->guessExtension();
+         $image->move($this->getParameter('imagesRecettes'), $fileName);
+         $recette->setImage($fileName);
+      }
 
-      $recette->setImage($fileName);
       $user->addRecette($recette);
       $manager->persist($recette);
       $manager->persist($user);
@@ -102,8 +104,44 @@ class RecetteController extends AbstractController
       return $this->json([]);
    }
 
-   #[Route('/api_update_recette', name: "api_update_recipe", methods: ['POST'])]
-   public function update_recipe() : JsonResponse {
+   #[Route('/api_update_recette/{id}', name: "api_update_recipe", methods: ['POST'])]
+   public function update_recipe(int $id, Request $request, SerializerInterface $serializer, EntityManagerInterface $manager, RecetteRepository $recetteRepository) : JsonResponse {
+      $user = $this->getUser();
+      if (!$user) {
+         return $this->json(['error' => 'Utilisateur introuvable']);
+      }
+      $oldRecette = $recetteRepository->findOneBy(['id' => $id]);
+      if ($oldRecette) {
+         if ($oldRecette->getImage()) {
+            unlink($this->getParameter('imagesRecettes') . $oldRecette->getImage());
+         }
+         $manager->remove($oldRecette);
+      }
+
+      $recette = $serializer->deserialize($request->request->get("recette"), Recette::class, 'json', ['groups' => 'api:show:recette']);
+      $ingredients = json_decode($request->request->get('ingredients'), true);
+
+      foreach ($ingredients as $i) {
+         $ingredient = new Ingredient();
+         $ingredient->setName($i['name']);
+         $ingredient->setQuantity($i['quantity']);
+         $recette->addIngredient($ingredient);
+         $manager->persist($ingredient);
+      }
+
+      $image = $request->files->get("image");
+      if ($image) {
+         $fileName = md5(uniqid()) . '.' . $image->guessExtension();
+         $image->move($this->getParameter('imagesRecettes'), $fileName);
+         $recette->setImage($fileName);
+      }
+
+      $user->addRecette($recette);
+      $manager->persist($recette);
+      $manager->persist($user);
+      $manager->flush();
+
+      $this->addFlash('success', 'La recette a bien été modifiée');
       return $this->json([]);
    }
 }

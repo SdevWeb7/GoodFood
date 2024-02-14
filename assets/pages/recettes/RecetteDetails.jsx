@@ -24,27 +24,34 @@ export function RecetteDetails () {
 
 
    return (
-      <article className={'recette-details'}>
+      <section className={'recette-details'}>
 
          {Object.entries(recette).length > 0 ?
          <><h1>{recette.name}</h1>
             <p>{recette.description}</p>
             <hr/>
-            <img src={recette.image ? `/images/recettes/${recette.image}` : '/images/antarctique.jpg'} alt="recette-image" />
+            <img
+               src={recette.image ?
+                  `/images/recettes/${recette.image}` :
+                  '/images/antarctique.jpg'} alt="recette-image" />
             <hr/>
-            <div>
-               <p>Ingredients:</p>
-               {recette.ingredients?.map(ing => <p key={uuidv4()}>{ing.name} {ing.quantity}</p>)}
-            </div>
+
+            <h2>Ingredients:</h2>
+            {recette.ingredients.map(ing =>
+               <p key={uuidv4()}>{ing.quantity} {ing.name}</p>)}
+
             <hr/>
+            <h2>Détails de la préparation</h2>
             <p>{recette.process}</p>
             <hr/>
-            <p>Temps de préparation: {recette.duration} minute(s)</p>
+            <h2>Temps de préparation: </h2>
+            <p>{recette.duration} minute(s)</p>
             <hr/>
-            <p>Informations complémentaires: {recette.more}</p>
+            <h2>Informations complémentaires:</h2>
+            <p>{recette.more}</p>
             <hr/>
-            <p>Créé par: {recette.user ? recette.user.email : 'Anonyme'}</p></> :
-            <h1>Recette Introuvable</h1>}
-      </article>
+            <h2>Créé par:</h2>
+            <p>{recette.user ? recette.user.email : 'Anonyme'}</p></> : <h1>Recette Introuvable</h1>}
+      </section>
    )
 }
