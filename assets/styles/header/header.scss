@@ -1,10 +1,11 @@
 .header {
   position: sticky;
   top: 0;
-  background-color: var(--color-bg2);
-  color: var(--color-txt2);
-  padding: 0 1rem;
-  box-shadow: 0 0 2px 2px var(--color-bg2);
+  padding: .5rem 1rem;
+  color: var(--txt2);
+  background-color: var(--bg2);
+  box-shadow: 0 0 3px 1px var(--black-in-light);
+  border-bottom: 1px solid var(--black-in-light);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,9 +19,9 @@
 
     a:not(.logo-container) {
       display: none;
-
     }
   }
+
   .logo-container {
     display: flex;
     align-items: center;
@@ -39,7 +40,7 @@
     }
     .logo {
       margin-right: .4rem;
-      transform: translateY(-2px) rotate(-44deg);
+      transform: rotate(-44deg);
     }
   }
 
@@ -49,17 +50,11 @@
 
 }
 
-@media #{$mobile-min} {
-  .header {
-    padding: 0 2rem;
-  }
-}
-
-@media #{$tablet-min} {
-  .header {
-    padding: 0 4rem;
-  }
-}
 @media only screen and (min-width: 640px) {
-  .header .navbar a:not(.logo-container) {display: inline;}
+  .header {
+    padding: .5rem 3rem;
+
+    .navbar a:not(.logo-container) {display: inline;}
+  }
+
 }

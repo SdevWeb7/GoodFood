@@ -4,11 +4,9 @@
   right: 0;
   bottom: .4rem;
   width: 300px;
-  color: var(--color-txt2);
-  background-color: var(--color-bg2);
-  box-shadow: 0 0 10px -3px var(--color-txt2);
+  color: var(--txt2);
+  background-color: var(--bg2);
   z-index: 1001;
-
 
   .nav-menu {
     height: 100%;
@@ -33,7 +31,7 @@
       left: 50%;
       right: 50%;
       height: 2px;
-      background-color: var(--color-txt2);
+      background-color: var(--txt2);
       transition: all .2s ease-in-out;
       opacity: 0;
     }

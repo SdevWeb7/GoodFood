@@ -24,7 +24,6 @@ export function Footer () {
             <Link to={'https://www.linkedin.com/in/steven-durand-1486b82a1/'} target={'_blank'}>
                Faire un don <span style={{fontSize: '1.5rem'}}>🫶</span>
             </Link>
-
          </nav>
 
          <motion.div

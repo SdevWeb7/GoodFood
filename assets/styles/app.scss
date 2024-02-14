@@ -1,45 +1,38 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "responsive";
+@import "reset";
 @import "fonts";
 @import "theme-colors";
-@import "utils/scrollbar";
-@import "responsive";
-@import "header/header";
 @import "links";
+@import "utils/scrollbar";
+@import "main";
+@import "header/header";
 @import "header/burger-menu";
 @import "header/menu";
-@import "footer";
-@import "main";
+@import "form/form";
 @import "utils/toaster";
 @import "utils/spinner";
 @import "home";
-@import "form/form";
 @import "recettes/recettes";
 @import "recettes/recette_details";
 @import "recettes/recette_edit";
+@import "footer";
 
-html, body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 body {
-  color: var(--color-txt1);
-  background-color: var(--color-bg1);
-  font-family: CocoSharp;
+  color: var(--txt1);
+  background-color: var(--bg1);
+  font-family: Montserrat;
   overflow-x: hidden;
 
   &:before, &:after {
     position: absolute;
     content: '';
     top: 7rem;
-    background: var(--color-txt1);
-    opacity: .1;
+    background: var(--txt1);
     width: 30rem;
     height: 30rem;
-    z-index: -1;
+    opacity: .1;
+    z-index: -2;
   }
   &:before {
     right: 0;
@@ -56,9 +49,7 @@ body {
 
 
 @media #{$tablet-min} {
-  body {
-    &:after {
-      opacity: 0.1;
-    }
+  body:after {
+    opacity: 0.1;
   }
 }

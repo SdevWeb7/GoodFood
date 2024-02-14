@@ -27,12 +27,15 @@ export function Header () {
             </NavLink>
 
 
-            <NavLink className={'navlink'} to={'/recettes'}>Recettes</NavLink>
+            <NavLink className={'navlink'} to={'/recettes'}>
+               Recettes</NavLink>
 
             {user && Object.keys(user).length > 0 &&
-               <NavLink className={'navlink'} to={'/mes-recettes'}>Mes recettes</NavLink>}
+               <NavLink className={'navlink'} to={'/mes-recettes'}>
+                  Mes recettes</NavLink>}
 
-            <NavLink className={'navlink'} to={'/contact'}>Contact</NavLink>
+            <NavLink className={'navlink'} to={'/contact'}>
+               Contact</NavLink>
          </nav>
 
          <Burger />

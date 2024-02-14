@@ -5,18 +5,17 @@ import { Link } from "react-router-dom";
 export function Home () {
 
    return (
-      <>
-      <div className={'home'}>
+      <article className={'home'}>
+
          <Fader>
-            <h1>Découvre gratuitement toutes les recettes de la communauté Good-Food!</h1>
-            <h2>Crée un compte pour partager les tiennes et liker/commenter celles des autres.</h2>
+         <h1>Découvre gratuitement toutes les recettes de la communauté Good-Food!</h1>
+         <p>Crée un compte pour créer/partager tes recettes et liker/commenter celles des autres.</p>
 
-            <nav className="start">
-               <Link to={'/recettes'} className="btn">Toutes les recettes</Link>
-               <Link to={'/subscribe'} className="btn">Inscription</Link>
-            </nav>
-
+         <nav className="start">
+            <Link to={'/recettes'} className="btn">Explorer</Link>
+            <Link to={'/subscribe'} className="btn">S'inscrire</Link>
+         </nav>
          </Fader>
-      </div>
-      </>)
+
+      </article>)
 }

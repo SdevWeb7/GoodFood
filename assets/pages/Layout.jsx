@@ -14,8 +14,8 @@ export function Layout () {
          <main className="main">
             <ErrorBoundary
                fallback={<h1
-                  className={'not-found'}>
-                  Il y a eu une erreur</h1>}>
+                  className={'not-found'}>Il y a eu une erreur</h1>}>
+
                <Outlet />
             </ErrorBoundary>
          </main>

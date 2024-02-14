@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-
 {% block body %}
-
 
     {% set messages = [] %}
     {% for type, message in app.flashes %}
         {% set messages = messages|merge([{'type': type, 'messages': message}]) %}
     {% endfor %}
 
-    <div
+    <section
         id="react"
-        data-toasts="{{ messages|json_encode|e('html_attr') }}"></div>
+        data-toasts="{{ messages|json_encode|e('html_attr') }}">
+    </section>
+
 {% endblock %}

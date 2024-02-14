@@ -49,7 +49,9 @@ export function Toaster () {
 
                <IconClose onClick={() => setToasts([])} />
 
-            {toasts.map(({type, messages}) => messages.map(message => <p key={message} className={findClassByType(type)}>{message}</p>))}
+            {toasts.map(({type, messages}) => messages.map(message => <p
+               key={message} className={findClassByType(type)}>
+               {message}</p>))}
          </motion.div>}
 
          </AnimatePresence></>

@@ -7,10 +7,9 @@ import { contactSchema } from "../FormSchemas";
 
 export function Contact () {
    const [symfonyError, setSymfonyError] = useState('')
-   const {register, handleSubmit, formState: {isValid, isSubmitting, errors}} = useForm({
-      mode: 'onBlur',
-      resolver: yupResolver(contactSchema)
-   })
+   const {register, handleSubmit,
+      formState: {isValid, isSubmitting, errors}} = useForm(
+         {mode: 'onBlur', resolver: yupResolver(contactSchema)})
 
    const onSubmit = (data) => {
       fetch('/api_contact', {
@@ -35,22 +34,30 @@ export function Contact () {
 
 
    return (
-      <>
-         <Fader>
-            <form className={'auth-form'}>
-               <h1>Contact</h1>
+      <><Fader><form className={'auth-form'}>
+         <h1>Contact</h1>
 
-               {symfonyError.length > 1 && <p>{symfonyError}</p>}
+         {symfonyError.length > 1 && <p>{symfonyError}</p>}
 
-               <input placeholder={'Votre adresse e-mail'} {...register("email", { required: true })} autoComplete={'current-email'} />
-               {errors.email && <span>{errors.email.message}</span>}
 
-               <textarea placeholder={'Votre Message'}  {...register("message", { required: true })} />
-               {errors.message && <span>{errors.message.message}</span>}
+         <input
+            placeholder={'Votre adresse e-mail'}
+            autoComplete={'current-email'}
+            {...register("email", { required: true })} />
+         {errors.email && <span>{errors.email.message}</span>}
 
-               <input type={"submit"} className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} onClick={handleSubmit(onSubmit)} value={'Envoyer'} />
-            </form>
-         </Fader>
-      </>
+
+         <textarea
+            placeholder={'Votre Message'}
+            {...register("message", { required: true })} />
+         {errors.message && <span>{errors.message.message}</span>}
+
+
+         <input
+            type={"submit"}
+            className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`}
+            onClick={handleSubmit(onSubmit)}
+            value={'Envoyer'} />
+      </form></Fader></>
    );
 }

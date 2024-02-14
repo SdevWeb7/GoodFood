@@ -1,23 +1,8 @@
-.header, .menu {
-  a, a:visited {
-    opacity: .7;
-    font-family: Comic;
-    font-size: 1rem;
-    text-decoration: none;
-    color: var(--color-txt2);
-
-    &.active, &:hover {
-      opacity: 1;
-    }
-  }
-  ul {
-    list-style: none;
-  }
-}
-
 a, a:visited {
+  font-size: 1rem;
+  font-family: Comic;
   text-decoration: none;
-  color: var(--color-txt2);
+  color: var(--txt2);
   opacity: .7;
 
   &:hover {
@@ -25,17 +10,17 @@ a, a:visited {
   }
 }
 
-.btn, btn:visited {
+.btn, .btn:visited {
+  font-family: Comic;
+  cursor: pointer;
   text-align: center;
-  font-weight: bold;
   letter-spacing: .1rem;
-  color: var(--color-txt2);
-  background-color: var(--color-bg2);
-  text-decoration: none;
+  color: var(--txt2);
+  border: 1px solid var(--black-in-light);
+  box-shadow: 0 0 3px 2px var(--black-in-light);
+  background-color: var(--bg2);
   border-radius: .4rem;
   padding: .7rem 1.2rem;
-  cursor: pointer;
-
   opacity: .8;
 
   &:hover {
