@@ -28,7 +28,7 @@ class Recette
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['api:show:user', 'api:show:recette', 'api:show:ingredient'])]
+    #[Groups(['api:show:user', 'api:show:recette', 'api:show:ingredient', 'api:show:like', 'api:show:comment'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -51,9 +51,17 @@ class Recette
     #[Groups(['api:show:user', 'api:show:recette', 'api:show:ingredient'])]
     private ?string $image = null;
 
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'recette', orphanRemoval: true)]
+    private Collection $likes;
+
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'Recette', orphanRemoval: true)]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,6 +173,66 @@ class Recette
     public function setImage(?string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): static
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): static
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getRecette() === $this) {
+                $like->setRecette(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getRecette() === $this) {
+                $comment->setRecette(null);
+            }
+        }
 
         return $this;
     }

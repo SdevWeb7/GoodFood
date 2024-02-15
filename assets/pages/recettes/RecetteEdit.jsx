@@ -12,7 +12,7 @@ export function RecetteEdit () {
    const { id } = useParams()
    const user = useAppStore.use.user()
    const [recette, setRecette] = useState({})
-   const { register, handleSubmit, formState: {errors, isSubmitting, isValid} } = useForm({
+   const { register, handleSubmit, formState: {errors, isSubmitting, isValid}, setValue } = useForm({
       mode: 'onBlur',
       resolver: yupResolver(recetteSchemas)
    })
@@ -30,6 +30,11 @@ export function RecetteEdit () {
    useEffect(() => {
       if (recette) {
          setIngredients(recette.ingredients)
+         setValue('name', recette.name)
+         setValue('description', recette.description)
+         setValue('process', recette.process)
+         setValue('duration', recette.duration)
+         setValue('more', recette.more)
 
          if (recette.image) {
             fetch(`/images/recettes/${recette.image}`)
