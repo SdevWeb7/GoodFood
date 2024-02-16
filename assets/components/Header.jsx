@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useScrollY } from "../hooks/useScrollY";
 import { headerVariants } from "../utils";
 import { useAppStore } from "../store";
+import { Search } from "./Search";
 
 export function Header () {
    const user = useAppStore.use.user()
@@ -37,6 +38,8 @@ export function Header () {
             <NavLink className={'navlink'} to={'/contact'}>
                Contact</NavLink>
          </nav>
+
+         <Search />
 
          <Burger />
 

@@ -56,12 +56,21 @@ class RecetteController extends AbstractController
          return $this->json(['error' => 'Problème d\'utilisateur']);
       }
 
-      if (file_exists($this->getParameter('imagesRecettes') . $recette->getImage())) {
+      if ($recette->getImage() && file_exists($this->getParameter('imagesRecettes') . $recette->getImage())) {
          unlink($this->getParameter('imagesRecettes') . $recette->getImage());
       }
 
       foreach ($recette->getIngredients() as $ingredient) {
+         $recette->removeIngredient($ingredient);
          $manager->remove($ingredient);
+      }
+      foreach ($recette->getLikes() as $like) {
+         $recette->removeLike($like);
+         $manager->remove($like);
+      }
+      foreach ($recette->getComments() as $comment) {
+         $recette->removeComment($comment);
+         $manager->remove($comment);
       }
       $user->removeRecette($recette);
       $manager->remove($recette);

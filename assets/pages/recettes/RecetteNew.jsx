@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { recetteSchemas } from "../../FormSchemas";
 import { AddIngredients } from "./AddIngredients";
+import EventBus from "../../hooks/EventBus";
 
 export function RecetteNew () {
    const user = useAppStore.use.user()
@@ -19,6 +20,14 @@ export function RecetteNew () {
 
    const onSubmit = (datas) => {
       const formData = new FormData()
+      if (selectedImage) {
+         if (selectedImage.type === 'image/jpeg' || selectedImage.type === 'image/jpg' || selectedImage.type === 'image/png') {
+            formData.append('image', selectedImage)
+         } else {
+            EventBus.emit('ToastMessage', [{type: 'error', messages: ["L'image n'est pas valide"]}])
+            throw new Error('Image invalide')
+         }
+      }
       formData.append('recette', JSON.stringify({
          name: datas.name,
          description: datas.description,
@@ -26,7 +35,6 @@ export function RecetteNew () {
          duration: datas.duration,
          more: datas.more
       }))
-      formData.append('image', selectedImage)
       formData.append('ingredients', JSON.stringify(ingredients))
 
       fetch('/api_add_recette', {
