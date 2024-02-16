@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import EventBus from "../hooks/EventBus";
 import { findClassByType, toasterVariants } from "../utils";
 import { IconClose } from "../svg/IconClose";
+import { v4 as uuidv4 } from 'uuid';
 
 export function Toaster () {
    const [toasts, setToasts] = useState([])
@@ -50,7 +51,7 @@ export function Toaster () {
                <IconClose onClick={() => setToasts([])} />
 
             {toasts.map(({type, messages}) => messages.map(message => <p
-               key={message} className={findClassByType(type)}>
+               key={uuidv4()} className={findClassByType(type)}>
                {message}</p>))}
          </motion.div>}
 

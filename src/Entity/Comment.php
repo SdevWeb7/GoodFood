@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -14,10 +15,13 @@ class Comment
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['api:show:recette'])]
     private ?string $content = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['api:show:recette'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]

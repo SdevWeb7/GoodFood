@@ -52,9 +52,11 @@ class Recette
     private ?string $image = null;
 
     #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'recette', orphanRemoval: true)]
+    #[Groups(['api:show:recette'])]
     private Collection $likes;
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'Recette', orphanRemoval: true)]
+    #[Groups(['api:show:recette'])]
     private Collection $comments;
 
     public function __construct()

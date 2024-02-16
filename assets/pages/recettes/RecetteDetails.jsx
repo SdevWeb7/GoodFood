@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import eventBus from "../../hooks/EventBus";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
+import { CommentDetails } from "../../components/CommentDetails";
+import { LikeDetails } from "../../components/LikeDetails";
 
 export function RecetteDetails () {
    const { id } = useParams()
@@ -28,8 +30,10 @@ export function RecetteDetails () {
 
          {Object.entries(recette).length > 0 ?
          <><h1>{recette.name}</h1>
+            <LikeDetails recette={recette} setRecette={setRecette} />
             <p>{recette.description}</p>
             <hr/>
+
             <img
                src={recette.image ?
                   `/images/recettes/${recette.image}` :
@@ -41,7 +45,7 @@ export function RecetteDetails () {
                <p key={uuidv4()}>{ing.quantity} {ing.name}</p>)}
 
             <hr/>
-            <h2>Détails de la préparation</h2>
+            <h2>Détails de préparation</h2>
             <p>{recette.process}</p>
             <hr/>
             <h2>Temps de préparation: </h2>
@@ -51,7 +55,10 @@ export function RecetteDetails () {
             <p>{recette.more}</p>
             <hr/>
             <h2>Créé par:</h2>
-            <p>{recette.user ? recette.user.email : 'Anonyme'}</p></> : <h1>Recette Introuvable</h1>}
+            <p>{recette.user ? recette.user.email : 'Anonyme'}</p>
+            <hr/>
+            <CommentDetails recette={recette} setRecette={setRecette} />
+            </> : <h1>Recette Introuvable</h1>}
       </section>
    )
 }

@@ -3,8 +3,14 @@ import eventBus from "../../hooks/EventBus";
 import { v4 as uuidv4 } from 'uuid';
 import { NavLink } from "react-router-dom";
 import { Paginator } from "../../components/Paginator";
+import { HeartArrowFilled } from "../../svg/HeartArrowFilled";
+import { useAppStore } from "../../store";
+import { HeartArrow } from "../../svg/HeartArrow";
+import { Like } from "../../components/Like";
+import { Comment } from "../../components/Comment";
 
 export function Recettes () {
+   const user = useAppStore.use.user()
    const [recettes, setRecettes] = useState([])
    const [page, setPage] = useState(1)
    const [totalRecettes, setTotalRecettes] = useState(0)
@@ -28,6 +34,7 @@ export function Recettes () {
    }, [page])
 
 
+
    return (
       <section className={'recettes'}>
          <h1>Recettes</h1>
@@ -46,6 +53,11 @@ export function Recettes () {
                key={uuidv4()}
                className={'recette'}>
 
+               <Like
+                  className={'like'}
+                  setRecettes={setRecettes}
+                  recipe={recipe} />
+
                <p className={'title'}>{recipe.name}</p>
 
                <p>{recipe.description}</p>
@@ -59,6 +71,8 @@ export function Recettes () {
 
                <p>Créé par:
                   {recipe.user ? recipe.user.email : 'Anonyme'}</p>
+
+               <Comment recette={recipe} setRecettes={setRecettes} />
 
             </article>) : <p>Aucune Recette, ajoutez-en !</p>}
          </div>
