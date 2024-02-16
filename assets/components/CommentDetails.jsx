@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import eventBus from "../hooks/EventBus";
+import { CommentsModal } from "./CommentsModal";
 
 export function CommentDetails ({recette, setRecette}) {
    const [comment, setComment] = useState('')
+   const [commentsModal, setCommentsModal] = useState(false)
 
    const addComment = () => {
       if (comment.length > 4) {
@@ -31,12 +33,17 @@ export function CommentDetails ({recette, setRecette}) {
          }).catch(e => console.log(e))
       }
    };
-
+   const handleModal = (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setCommentsModal(v => !v)
+   };
 
    return (
          <div className={'comment'}>
             <p
-               style={{marginBottom: '1rem'}}>
+               style={{marginBottom: '1rem', cursor: 'pointer'}}
+               onClick={handleModal}>
                {recette.comments.length} commentaire(s)</p>
 
             <textarea
@@ -49,5 +56,7 @@ export function CommentDetails ({recette, setRecette}) {
                   className={'btn'}
                   onClick={addComment}>Commenter</button>
 
+            {commentsModal &&
+               <CommentsModal setModalComments={setCommentsModal} comments={recette.comments} />}
          </div>)
 }

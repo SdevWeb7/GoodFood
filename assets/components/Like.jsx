@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import eventBus from "../hooks/EventBus";
 import { HeartArrowFilled } from "../svg/HeartArrowFilled";
 import { HeartArrow } from "../svg/HeartArrow";
 import { useAppStore } from "../store";
+import { LikesModal } from "./LikesModal";
 
 export function Like ({setRecettes, recipe}) {
    const user = useAppStore.use.user()
+   const [likesModal, setLikesModal] = useState(false)
 
    const handleLike = (id) => {
       fetch(`/api_like/${id}`).then(r => {
@@ -42,16 +44,25 @@ export function Like ({setRecettes, recipe}) {
          }
       }).catch(e => console.log(e))
    }
-
+   const handleModal = (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setLikesModal(v => !v)
+   };
 
    return (
       <div className={'like'}>
-         <p>{recipe.likes.length} like(s)</p>
+         <p
+            style={{cursor: 'pointer'}}
+            onClick={handleModal}>{recipe.likes.length} like(s)</p>
 
          {user && recipe.likes.some(like => like.user.email === user.email) ?
             <HeartArrowFilled onClick={() => handleLike(recipe.id)} /> :
             <HeartArrow onClick={() => handleLike(recipe.id)} />
          }
+
+         {likesModal &&
+         <LikesModal likes={recipe.likes} setLikesModal={setLikesModal} />}
       </div>
    )
 }

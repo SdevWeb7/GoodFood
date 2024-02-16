@@ -3,14 +3,10 @@ import eventBus from "../../hooks/EventBus";
 import { v4 as uuidv4 } from 'uuid';
 import { NavLink } from "react-router-dom";
 import { Paginator } from "../../components/Paginator";
-import { HeartArrowFilled } from "../../svg/HeartArrowFilled";
-import { useAppStore } from "../../store";
-import { HeartArrow } from "../../svg/HeartArrow";
 import { Like } from "../../components/Like";
 import { Comment } from "../../components/Comment";
 
 export function Recettes () {
-   const user = useAppStore.use.user()
    const [recettes, setRecettes] = useState([])
    const [page, setPage] = useState(1)
    const [totalRecettes, setTotalRecettes] = useState(0)
@@ -69,8 +65,7 @@ export function Recettes () {
                      alt="recette-image" />
                </NavLink>
 
-               <p>Créé par:
-                  {recipe.user ? recipe.user.email : 'Anonyme'}</p>
+               <p>Créé par: {recipe.user ? recipe.user.email : 'Anonyme'}</p>
 
                <Comment recette={recipe} setRecettes={setRecettes} />
 
