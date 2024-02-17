@@ -94,7 +94,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -106,7 +105,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+   public function addRole(string $role): static
+   {
+      if (!in_array($role, $this->roles)) {
+         $this->roles[] = $role;
+      }
 
+      return $this;
+   }
     /**
      * @see PasswordAuthenticatedUserInterface
      */
