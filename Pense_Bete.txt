@@ -1,0 +1,16 @@
+
+Points à travailler:
+
+- validation image coté back
+
+- bug apres ajout de commentaire il ne s'affiche pas dans la modal avant rafraichissement (à vérifier pour LikeModal)
+
+-  selectedImage bug si on supprime et remet une image
+
+- Store global pour recettes ?
+
+- Recherche par ingrédient
+
+- Bug de css dans les modal Like et Comment
+
+- Les routes imbriqués qui ne fonctionne que par les navlink et pas au rafraichissement

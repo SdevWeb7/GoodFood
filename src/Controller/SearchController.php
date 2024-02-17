@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\IngredientRepository;
 use App\Repository\RecetteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,4 +22,22 @@ class SearchController extends AbstractController
 
         return $this->json($recettes, 200, [], ['groups' => 'api:show:recette']);
     }
+
+   #[Route('/api_search_ingredient/{name}', name: 'app_search_ingredient')]
+   public function search(string $name, IngredientRepository $ingredientRepository): Response
+   {
+      $ingredient = $ingredientRepository
+               ->createQueryBuilder('i')
+               ->andWhere('i.name LIKE :name')
+               ->setParameter('name', '%'.$name.'%')
+               ->setMaxResults(1)
+               ->getQuery()
+               ->getResult();
+
+      if ($ingredient) {
+         return $this->json($ingredient, 200, [], ['groups' => 'api:show:ingredient']);
+      } else {
+         return $this->json([]);
+      }
+   }
 }
