@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import eventBus from "../hooks/EventBus";
 import { CommentsModal } from "./CommentsModal";
+import { useAppStore } from "../store";
 
 export function Comment ({recette, setRecettes}) {
 
+   const user = useAppStore.use.user()
    const [comment, setComment] = useState('')
    const [modalComments, setModalComments] = useState(false)
 
@@ -28,7 +30,7 @@ export function Comment ({recette, setRecettes}) {
                setComment('')
                setRecettes(prevRecettes => prevRecettes.map(r => {
                   if (r.id === recette.id) {
-                     recette.comments.push({commentaire: "add"})
+                     recette.comments.push({recette: recette, user: {email: user.email}})
                   }
                   return r
                }))
