@@ -24,14 +24,14 @@ export function Menu () {
          initial={{opacity: 0}}
          exit={{opacity: 0}}
          animate={{opacity: 1}}
-         transition={{duration: .5}}
+         transition={{duration: .3}}
          className="background-menu">
 
-         <motion.div
+         <motion.section
          initial={{x: 300}}
          exit={{x: 300}}
          animate={{x: 0}}
-         transition={{duration: .5}}
+         transition={{duration: .3}}
          className="menu">
 
          <nav className="nav-menu">
@@ -41,11 +41,14 @@ export function Menu () {
                animate={'visible'}
                transition={{delayChildren: .4, staggerChildren: .15}}>
 
-               <NavLink className={'navlink'} to={'/recettes'}>Recettes</NavLink>
+               <motion.li variants={linksVariants}>
+                  <NavLink to={"/recettes"}>Recettes</NavLink>
+               </motion.li>
 
                {user && Object.keys(user).length > 0 &&
-                  <NavLink className={'navlink'} to={'/mes-recettes'}>
-                     Mes recettes</NavLink>}
+                  <motion.li variants={linksVariants}>
+                     <NavLink to={"/mes-recettes"}>Mes recettes</NavLink>
+                  </motion.li>}
 
                <motion.li variants={linksVariants}>
                   <NavLink to={"/contact"}>Contact</NavLink>
@@ -65,6 +68,6 @@ export function Menu () {
 
             </motion.ul>
          </nav>
-      </motion.div>
+      </motion.section>
       </motion.div>, document.body)
 }

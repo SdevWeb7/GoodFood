@@ -24,13 +24,17 @@ export function CommentsModal ({comments, setModalComments}) {
 
 
    return createPortal(
-      <section ref={ref} className="modal-comments">
+      <section
+         ref={ref}
+         className="modal-comments">
+
          <p className={'close'}>
             <IconClose onClick={() => setModalComments(false)} />
          </p>
 
-         {comments.map(c => <p key={uuidv4()}>{c.user ? c.user.email : ''} : {c.content}</p>)}
-
+         {comments.map(c =>
+            <p key={uuidv4()}>
+               {c.user ? c.user.email : ''} : {c.content}</p>)}
 
       </section>,
       document.body)

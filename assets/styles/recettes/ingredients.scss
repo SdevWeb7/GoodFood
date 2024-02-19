@@ -18,17 +18,21 @@
     margin: 0;
   }
   .btn {
-    font-size: 1.2rem;
+    font-size: 2.5rem;
+    font-weight: normal;
     text-align: center;
     padding: .1rem .5rem;
     margin: 0 0 0 1rem;
   }
   .btn:not(.btn-add) {
-    background-color: red;
+    background-color: #f62e2e;
+    font-size: 1.2rem;
+    font-weight: bolder;
+    font-family: Inter, sans-serif;
   }
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 600px) {
   .add-ingredient {
     flex-direction: column;
     align-items: stretch;

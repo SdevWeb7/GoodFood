@@ -4,11 +4,15 @@
   h1 {
     font-size: 3rem;
     text-align: center;
-    font-family: Inter, sans-serif !important;
     font-weight: bolder;
+    margin-bottom: 2rem;
+  }
+  h2 {
+    text-align: center;
+    font-weight: bolder;
+    font-size: 2rem;
   }
   p {
-    font-family: Inter, sans-serif !important;
     font-size: 1.2rem;
   }
 }
@@ -17,5 +21,15 @@
 @media only screen and (min-width: 450px) {
   .main {
     margin: 4rem;
+  }
+}
+@media only screen and (max-width: 450px) {
+  .main {
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
   }
 }

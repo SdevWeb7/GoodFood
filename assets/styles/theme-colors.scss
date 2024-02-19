@@ -1,26 +1,30 @@
 :root {
   --txt1: #034b06;
-  --bg1: rgb(228, 245, 229);
-  --txt2: rgb(228, 245, 229);
-  --bg2: rgb(21, 164, 28);
-  --black-in-light: black;
+  --bg1: #F1F2EB;
+  --txt2: #121212;
+  --bg2: #7EB77F;
+  --black-in-light: #121212;
+  --white-in-light: #FAFAFA;
+  --black: #121212;
+  --white: #FAFAFA;
+  --green-light: #7EB77F;
+  --toast-info: #4f3202;
+  --toast-error: #790505;
 }
 
 [data-theme="dark"] {
-  --txt1: #EDF3F8;
-  --bg1: #36536b;
-  --txt2: #EDF3F8;
-  --bg2: #36536b;
-  --black-in-light: white;
-}
+  --txt1: #121212;
+  --bg1: #7EB77F;
+  --txt2: #F1F2EB;
+  --bg2: #034b06;
+  --black-in-light: #FAFAFA;
+  --white-in-light: #121212;
+  --black: #121212;
+  --white: #FAFAFA;
+  --toast-info: orange;
+  --toast-error: #fd5959;
 
-
-.colors {
-  color: #FBFCFE;
-  color: #36536B;
-  color: #1B262F;
-  color: #DA6D97;
-  color: #BA4270;
-  color: #6C8294;
-  color: #f7fafb;
+  input::placeholder {
+    color: var(--txt1);
+  }
 }

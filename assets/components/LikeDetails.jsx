@@ -51,10 +51,13 @@ export function LikeDetails ({recette, setRecette}) {
             onClick={handleModal}>
             {recette.likes.length} like(s)</p>
 
+
          {user && recette.likes.some(like => like.user.email === user.email) ?
-            <HeartArrowFilled onClick={() => handleLike(recette.id)} /> :
-            <HeartArrow onClick={() => handleLike(recette.id)} />
-         }
+            <HeartArrowFilled
+               onClick={() => handleLike(recette.id)} /> :
+            <HeartArrow
+               onClick={() => handleLike(recette.id)} />}
+
 
          {likesModal &&
             <LikesModal

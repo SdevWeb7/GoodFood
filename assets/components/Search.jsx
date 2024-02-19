@@ -13,14 +13,16 @@ export function Search () {
    };
 
 
-   return (
-      <>
-         <SearchIcon
-            className={'search-icon'}
-            onClick={handleOpen} />
+   return (<>
+      <a
+         href={'#'}
+         onClick={e => e.preventDefault()}
+         className={'search-icon'}
+         onClick={handleOpen}>
 
-         {openSearch &&
-            <SearchBar setSearchOpen={setOpenSearch} />}
-      </>
-   )
+         <SearchIcon />
+      </a>
+
+      {openSearch &&
+         <SearchBar setSearchOpen={setOpenSearch} />}</>)
 }

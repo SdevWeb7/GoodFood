@@ -3,10 +3,14 @@
   display: flex;
   flex-direction: column;
   background-color: var(--bg1);
-  border: 1px solid var(--black-in-light);
-  box-shadow: 0 0 3px 1px var(--black-in-light);
+  border: 1px solid var(--black);
+  box-shadow: 0 0 5px 3px var(--black);
   padding: 1rem;
   margin: 5rem auto 0 auto;
+
+  h1 {
+    margin-bottom: 1rem;
+  }
 
   p {
     margin: 1rem 0 0 0;
@@ -18,28 +22,31 @@
   }
 
   input:not(.btn), textarea {
-    resize: none;
     margin-top: 2rem;
-    padding: .7rem;
     color: var(--txt1);
     background-color: var(--bg1);
-    border: 1px solid var(--black-in-light);
-    box-shadow: 0 0 3px 1px var(--black-in-light);
+    border: 1px solid var(--black);
+    box-shadow: 0 0 3px 1px var(--black);
     border-radius: .2rem;
   }
 
 
   input[type="submit"] {
-    margin-top: 2rem;
-    opacity: .3;
+    margin: 2rem 0 1rem 0;
+    opacity: .5;
 
     &.submit-valid {
-      opacity: .7;
+      opacity: .8;
 
       &:hover {
         opacity: 1;
       }
     }
+  }
+
+  .reset-pass {
+    text-align: center;
+    color: var(--txt1);
   }
 }
 

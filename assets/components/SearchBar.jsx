@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 export function SearchBar ({setSearchOpen}) {
    const [recettes, setRecettes] = useState([])
    const [search, setSearch] = useState('')
-   const [ingredient, setIngredient] = useState({})
    const [searchIngredient, setSearchIngredient] = useState('')
    const ref = useRef(null)
 
@@ -20,9 +19,8 @@ export function SearchBar ({setSearchOpen}) {
    }, [])
 
    useEffect(() => {
-      setSearchIngredient('')
-      setIngredient({})
       if (search.length > 1) {
+         setSearchIngredient('')
          fetch(`/api_search_recette/${search}`)
             .then(r => {
                if (!r.ok) {
@@ -42,9 +40,8 @@ export function SearchBar ({setSearchOpen}) {
    }, [search])
 
    useEffect(() => {
-      setSearch('')
-      setRecettes([])
       if (searchIngredient.length > 1) {
+         setSearch('')
          fetch(`/api_search_ingredient/${searchIngredient}`)
             .then(r => {
                if (!r.ok) {
@@ -57,7 +54,12 @@ export function SearchBar ({setSearchOpen}) {
                   EventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
                   throw new Error('Problème serveur')
                }
-               setIngredient(datas[0])
+
+               let tempRecettes = []
+               for (let ingredient of datas) {
+                  tempRecettes.push(ingredient.recette)
+               }
+               setRecettes(tempRecettes)
             })
             .catch(e => console.log(e))
       }
@@ -71,8 +73,7 @@ export function SearchBar ({setSearchOpen}) {
 
 
    return createPortal(
-      <>
-         <div ref={ref} className="background-search">
+         <section ref={ref} className="background-search">
 
             <input
                type="text"
@@ -86,31 +87,23 @@ export function SearchBar ({setSearchOpen}) {
                type="text"
                value={searchIngredient}
                onChange={e => setSearchIngredient(e.target.value)}
-               placeholder={'Cherche une recette par ingrédient'}
+               placeholder={'Chercher par ingrédient'}
                className={'search-input'} />
 
 
-            {recettes.length > 0 &&
-               <div className="search-result">
-                  {recettes.map(r =>
-                     <NavLink
-                        key={uuidv4()}
-                        to={`/recette/details/${r.id}`}
-                        onClick={() => setSearchOpen(false)}>
-                        {r.name}</NavLink>)}
-               </div>}
+            <section className="search-result">
 
-            {ingredient && Object.entries(ingredient).length > 0 &&
-            <div className="search-result">
-               {ingredient.recettes.map(r =>
+            {recettes.length > 0 && recettes.map(r =>
                   <NavLink
                      key={uuidv4()}
                      to={`/recette/details/${r.id}`}
                      onClick={() => setSearchOpen(false)}>
                      {r.name}</NavLink>)}
-            </div>}
 
-         </div>
-      </>,
+
+            {recettes.length === 0 &&
+               <p>Aucun résultat</p>}
+            </section>
+         </section>,
       document.body)
 }

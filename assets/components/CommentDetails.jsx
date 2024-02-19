@@ -57,6 +57,8 @@ export function CommentDetails ({recette, setRecette}) {
                   onClick={addComment}>Commenter</button>
 
             {commentsModal &&
-               <CommentsModal setModalComments={setCommentsModal} comments={recette.comments} />}
+               <CommentsModal
+                  setModalComments={setCommentsModal}
+                  comments={recette.comments} />}
          </div>)
 }

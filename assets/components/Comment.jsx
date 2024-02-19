@@ -59,10 +59,15 @@ export function Comment ({recette, setRecettes}) {
             className={'btn'}
             onClick={addComment}>Commenter</button>
 
-         <p style={{cursor: "pointer"}} onClick={handleModal}>
-            {recette.comments.length} commentaire(s)</p>
+         <p
+            style={{cursor: "pointer"}}
+            onClick={handleModal}>
+            <u>{recette.comments.length} commentaire(s)</u></p>
+
 
          {modalComments &&
-            <CommentsModal comments={recette.comments} setModalComments={setModalComments} />}
+            <CommentsModal
+               comments={recette.comments}
+               setModalComments={setModalComments} />}
       </section>)
 }

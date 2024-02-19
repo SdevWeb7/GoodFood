@@ -48,9 +48,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $recettes;
 
     #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'user', orphanRemoval: true)]
+    #[Groups(['api:show:user'])]
     private Collection $likes;
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', orphanRemoval: true)]
+    #[Groups(['api:show:user'])]
     private Collection $comments;
 
     public function __construct()

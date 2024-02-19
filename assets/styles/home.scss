@@ -1,13 +1,7 @@
 .home {
 
-  p {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    margin: 3rem 0;
-  }
-
   .start {
+    margin-top: 2rem;
     display: flex;
     justify-content: center;
     gap: 2rem;
@@ -15,12 +9,7 @@
 }
 
 @media only screen and (max-width: 450px) {
-  .home {
-    h1 {
-      font-size: 2rem;
-    }
-    h2 {
-      font-size: 1rem;
-    }
+  .home .start {
+    gap: 1rem;
   }
 }

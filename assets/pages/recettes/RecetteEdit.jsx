@@ -8,6 +8,7 @@ import { recetteSchemas } from "../../FormSchemas";
 import { AddIngredients } from "./AddIngredients";
 import { useParams } from "react-router-dom";
 import EventBus from "../../hooks/EventBus";
+import { Add } from "../../svg/Add";
 
 export function RecetteEdit () {
    const { id } = useParams()
@@ -128,7 +129,7 @@ export function RecetteEdit () {
 
 
                <label htmlFor="process">Process de la recette</label>
-               <input
+               <textarea
                   id={"process"}
                   placeholder={'Process de la recette'}
                   {...register("process", { required: true })}
@@ -155,10 +156,12 @@ export function RecetteEdit () {
                {errors.more && <span>{errors.more.message}</span>}
 
 
-               <AddIngredients ingredients={ingredients} setIngredients={setIngredients} />
+               <AddIngredients
+                  ingredients={ingredients}
+                  setIngredients={setIngredients} />
 
 
-               <label htmlFor="image">Image de la recette</label>
+               <label htmlFor="image">Image de la recette <Add className={'add-image'} /></label>
                <input
                   type={'file'}
                   name={'image'}
@@ -167,7 +170,7 @@ export function RecetteEdit () {
                {selectedImage ?
                   <><button
                      className="btn btn-del"
-                     onClick={deleteImage}>X</button>
+                     onClick={deleteImage}>Supprimer l'image</button>
                      <img
                      src={URL.createObjectURL(selectedImage)}
                      alt="selected-image" /></> :
@@ -176,7 +179,7 @@ export function RecetteEdit () {
 
                <input
                   type={"submit"}
-                  className={`btn ${!isValid || isSubmitting ? 'btn-disabled' : ''}` }
+                  className={`btn submit ${!isValid || isSubmitting ? 'btn-disabled' : ''}` }
                   value={'Modifier la recette'} />
             </form></>)
    }

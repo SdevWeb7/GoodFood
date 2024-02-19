@@ -6,13 +6,15 @@ import EventBus from "../hooks/EventBus";
 import { Spinner } from "../components/Spinner";
 import { useAppStore } from "../store";
 import { Fader } from "../components/Fader";
+import { v4 as uuidv4 } from 'uuid';
 
 export function Subscribe () {
    const user = useAppStore.use.user()
    const [symfonyErrors, setSymfonyErrors] = useState([])
-   const {register, handleSubmit, formState: {isValid, isSubmitting, errors}} = useForm({
-      mode: 'onBlur',
-      resolver: yupResolver(registerSchemas)
+   const {register, handleSubmit,
+      formState: {isValid, isSubmitting, errors}} = useForm({
+         mode: 'onBlur',
+         resolver: yupResolver(registerSchemas)
    })
 
    const onSubmit = (data) => {
@@ -47,20 +49,30 @@ export function Subscribe () {
 
             {symfonyErrors.map(e => {
                for (let [key, value] of Object.entries(e)) {
-                  return <p key={`${key}-${Math.floor(Math.random() * 100)}`}>{key}: {value}</p>
+                  return <p key={uuidv4()}>{key}: {value}</p>
                }
             })}
 
-            <input placeholder={'Email Address'} {...register("email", {required: true})}
-                   autoComplete={'current-email'}/>
+            <input
+               placeholder={'Email Address'}
+               {...register("email", {required: true})}
+               autoComplete={'current-email'}/>
             {errors.email && <span>{errors.email.message}</span>}
 
-            <input type={'password'} placeholder={'Mot de passe'}
-                   autoComplete={'current-password'} {...register("password", {required: true})} />
+
+            <input
+               type={'password'}
+               placeholder={'Mot de passe'}
+               autoComplete={'current-password'}
+               {...register("password", {required: true})} />
             {errors.password && <span>{errors.password.message}</span>}
 
-            <input type={"submit"} className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`}
-                   onClick={handleSubmit(onSubmit)} value={'Inscription'}/>
+
+            <input
+               type={"submit"}
+               value={'Inscription'}
+               onClick={handleSubmit(onSubmit)}
+               className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} />
 
          </form>
          </Fader>

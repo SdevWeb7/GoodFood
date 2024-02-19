@@ -20,7 +20,7 @@ export const footerVariants = {
    visible: {y: 0, opacity: 1}
 }
 export const toasterVariants = {
-   hidden: {x: -180, opacity: 0},
+   hidden: {x: -300, opacity: 0},
    visible: {x: 0, opacity: 1}
 }
 

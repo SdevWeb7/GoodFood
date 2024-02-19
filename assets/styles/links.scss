@@ -3,7 +3,7 @@ a, a:visited {
   font-family: Comic;
   text-decoration: none;
   color: var(--txt2);
-  opacity: .7;
+  opacity: .8;
 
   &:hover {
     opacity: 1;
@@ -16,10 +16,10 @@ a, a:visited {
   text-align: center;
   letter-spacing: .1rem;
   color: var(--txt2);
-  border: 1px solid var(--black-in-light);
-  box-shadow: 0 0 3px 2px var(--black-in-light);
   background-color: var(--bg2);
-  border-radius: .4rem;
+  border: 1px solid var(--black);
+  box-shadow: 0 0 3px 2px var(--black);
+  border-radius: .2rem;
   padding: .7rem 1.2rem;
   opacity: .8;
 

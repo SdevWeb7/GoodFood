@@ -1,0 +1,21 @@
+input, textarea {
+  resize: none;
+  color: var(--txt1);
+  background-color: var(--white);
+  border: 1px solid var(--black);
+  box-shadow: 0 0 2px 2px var(--green-light);
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: .2rem;
+  padding: .5rem 1rem;
+}
+input {
+  height: 2.5rem;
+}
+textarea {
+  height: 3rem;
+
+  &::placeholder {
+    color: var(--txt1);
+  }
+}

@@ -4,34 +4,41 @@ import { motion } from "framer-motion";
 import { useScrollY } from "../hooks/useScrollY";
 import { footerVariants } from "../utils";
 import { useTheme } from "../hooks/useTheme";
+import { Monney } from "../svg/Monney";
 
 export function Footer () {
 
    const { theme, setTheme } = useTheme()
    const { isScrolledBot } = useScrollY()
 
-   const handleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light')
+   const handleTheme = (e) => {
+      e.preventDefault()
+      setTheme(t => t === 'light' ? 'dark' : 'light')
+   }
 
    return (
       <motion.footer
          initial={'visible'}
          animate={isScrolledBot || window.scrollY < 30 ? 'visible' : 'hidden'}
          variants={footerVariants}
-         transition={{duration: .5}}
+         transition={{duration: .3}}
          className="footer">
 
-         <nav className="navbar">
-            <Link to={'/stripe-payment'} target={'_blank'}>
-               Faire un don <span style={{fontSize: '1.5rem'}}>🫶</span>
-            </Link>
-         </nav>
+         <Link
+            to={'/stripe-payment'}
+            target={'_blank'}
+            className={'stripe-don'}>
+            <span>Faire un don</span>
+            <Monney />
+         </Link>
 
-         <motion.div
+         <a
+            href={'#'}
             onClick={handleTheme}
             data-isdark={theme === 'dark'}
             className="btn-theme">
-            <motion.div layout></motion.div>
-         </motion.div>
+            <span className={'switcher'}></span>
+         </a>
       </motion.footer>
    )
 }

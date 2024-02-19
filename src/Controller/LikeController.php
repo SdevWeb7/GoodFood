@@ -16,11 +16,11 @@ class LikeController extends AbstractController
     {
        $user = $this->getUser();
        if (!$user) {
-          return $this->json(['error' => 'Il faut être connecté pour pouvoir liker.']);
+          return $this->json(['error' => 'Il faut être connecté pour pouvoir liker']);
        }
        $recette = $recetteRepository->findOneBy(['id' => $recetteId]);
        if (!$recette) {
-          return $this->json(['error' => 'La recette est introuvable.']);
+          return $this->json(['error' => 'La recette est introuvable']);
        }
 
        $mustLike = true;

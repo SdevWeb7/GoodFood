@@ -52,17 +52,24 @@ export function Like ({setRecettes, recipe}) {
 
    return (
       <div className={'like'}>
+
          <p
             style={{cursor: 'pointer'}}
-            onClick={handleModal}>{recipe.likes.length} like(s)</p>
+            onClick={handleModal}><u>{recipe.likes.length} like(s)</u></p>
+
 
          {user && recipe.likes.some(like => like.user.email === user.email) ?
-            <HeartArrowFilled onClick={() => handleLike(recipe.id)} /> :
-            <HeartArrow onClick={() => handleLike(recipe.id)} />
+            <HeartArrowFilled
+               onClick={() => handleLike(recipe.id)} /> :
+            <HeartArrow
+               onClick={() => handleLike(recipe.id)} />
          }
 
+
          {likesModal &&
-         <LikesModal likes={recipe.likes} setLikesModal={setLikesModal} />}
+         <LikesModal
+            likes={recipe.likes}
+            setLikesModal={setLikesModal} />}
       </div>
    )
 }

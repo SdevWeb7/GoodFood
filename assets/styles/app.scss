@@ -4,6 +4,7 @@
 @import "theme-colors";
 @import "links";
 @import "utils/scrollbar";
+@import "inputs";
 @import "main";
 @import "header/header";
 @import "header/search";
@@ -26,9 +27,12 @@
 body {
   color: var(--txt1);
   background-color: var(--bg1);
-  font-family: Montserrat;
+  font-family: Inter, sans-serif;
   overflow-x: hidden;
 
+  * {
+    transition: all .3s ease-in-out;
+  }
   &:before, &:after {
     position: absolute;
     content: '';

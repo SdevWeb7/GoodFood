@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { recetteSchemas } from "../../FormSchemas";
 import { AddIngredients } from "./AddIngredients";
 import EventBus from "../../hooks/EventBus";
+import { Add } from "../../svg/Add";
 
 export function RecetteNew () {
    const user = useAppStore.use.user()
@@ -96,7 +97,7 @@ export function RecetteNew () {
 
 
             <label htmlFor="process">Process de la recette</label>
-            <input
+            <textarea
                id={"process"}
                placeholder={'Process de la recette'}
                {...register("process", { required: true })} />
@@ -123,7 +124,7 @@ export function RecetteNew () {
             <AddIngredients ingredients={ingredients} setIngredients={setIngredients} />
 
 
-            <label htmlFor="image">Image de la recette</label>
+            <label htmlFor="image">Image de la recette <Add className={'add-image'} /></label>
             <input
                type={'file'}
                name={'image'}
@@ -132,7 +133,7 @@ export function RecetteNew () {
             {selectedImage ?
                <><button
                   className="btn btn-del"
-                  onClick={deleteImage}>X</button>
+                  onClick={deleteImage}>Supprimer l'image</button>
                <img
                   src={URL.createObjectURL(selectedImage)}
                   alt="selected-image" /></> : <p>Pas d'image sélectionnée</p>}
@@ -140,7 +141,7 @@ export function RecetteNew () {
 
             <input
                type={"submit"}
-               className={`btn ${!isValid || isSubmitting ? 'btn-disabled' : ''}` }
+               className={`btn submit ${!isValid || isSubmitting ? 'btn-disabled' : ''}` }
                value={'Créer la recette'} />
          </form></>)
    }

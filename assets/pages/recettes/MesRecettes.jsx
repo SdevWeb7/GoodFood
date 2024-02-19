@@ -7,6 +7,7 @@ import { Spinner } from "../../components/Spinner";
 import { Modify } from "../../svg/Modify";
 import { Delete } from "../../svg/Delete";
 import { Paginator } from "../../components/Paginator";
+import { Add } from "../../svg/Add";
 
 export function MesRecettes () {
    const user = useAppStore.use.user()
@@ -59,14 +60,15 @@ export function MesRecettes () {
    } else if (Object.keys(user).length === 0) {
       window.location = '/'
    } else {
+
       return (
          <section className={'recettes'}>
             <h1>Mes recettes</h1>
             <h2>
                <NavLink
-                  className={'btn btn-add'}
-                  to={'/recette/creer'}>+</NavLink>
-
+                  to={'/recette/creer'}>
+                  <Add className={'btn-add'} />
+               </NavLink>
                {totalRecettes} recettes (Page {page} / {nombrePages})
             </h2>
 
@@ -83,7 +85,8 @@ export function MesRecettes () {
                      <article key={uuidv4()} className={'recette'}>
 
                      <div className="actions">
-                        <NavLink to={`/recette/editer/${recipe.id}`}>
+                        <NavLink
+                           to={`/recette/editer/${recipe.id}`}>
                            <Modify />
                         </NavLink>
 

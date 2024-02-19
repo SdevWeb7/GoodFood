@@ -40,7 +40,7 @@ export function RecetteDetails () {
                   '/images/antarctique.jpg'} alt="recette-image" />
             <hr/>
 
-            <h2>Ingredients:</h2>
+            <h2>Ingrédients:</h2>
             {recette.ingredients.map(ing =>
                <p key={uuidv4()}>{ing.quantity} {ing.name}</p>)}
 
@@ -57,8 +57,12 @@ export function RecetteDetails () {
             <h2>Créé par:</h2>
             <p>{recette.user ? recette.user.email : 'Anonyme'}</p>
             <hr/>
-            <CommentDetails recette={recette} setRecette={setRecette} />
-            </> : <h1>Recette Introuvable</h1>}
+
+            <CommentDetails
+               recette={recette}
+               setRecette={setRecette} /></> :
+
+            <h1>Recette Introuvable</h1>}
       </section>
    )
 }

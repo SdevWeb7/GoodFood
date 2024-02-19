@@ -65,9 +65,11 @@ export function Recettes () {
                      alt="recette-image" />
                </NavLink>
 
-               <p>Créé par: {recipe.user ? recipe.user.email : 'Anonyme'}</p>
+               <p>Créé par {recipe.user ? recipe.user.email : 'Anonyme'}</p>
 
-               <Comment recette={recipe} setRecettes={setRecettes} />
+               <Comment
+                  recette={recipe}
+                  setRecettes={setRecettes} />
 
             </article>) : <p>Aucune Recette, ajoutez-en !</p>}
          </div>

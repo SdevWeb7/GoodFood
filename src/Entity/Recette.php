@@ -19,9 +19,6 @@ class Recette
     #[Groups(['api:show:user', 'api:show:recette', "api:show:ingredient"])]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Ingredient::class, inversedBy: 'recettes')]
-    #[Groups(['api:show:user', 'api:show:recette'])]
-    private Collection $ingredients;
 
     #[ORM\ManyToOne(inversedBy: 'recettes')]
     #[Groups(['api:show:recette', 'api:show:ingredient'])]
@@ -59,11 +56,15 @@ class Recette
     #[Groups(['api:show:recette'])]
     private Collection $comments;
 
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'recette')]
+    #[Groups(['api:show:recette'])]
+    private Collection $ingredients;
+
     public function __construct()
     {
-        $this->ingredients = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,29 +72,6 @@ class Recette
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Ingredient>
-     */
-    public function getIngredients(): Collection
-    {
-        return $this->ingredients;
-    }
-
-    public function addIngredient(Ingredient $ingredient): static
-    {
-        if (!$this->ingredients->contains($ingredient)) {
-            $this->ingredients->add($ingredient);
-        }
-
-        return $this;
-    }
-
-    public function removeIngredient(Ingredient $ingredient): static
-    {
-        $this->ingredients->removeElement($ingredient);
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -233,6 +211,35 @@ class Recette
             // set the owning side to null (unless already changed)
             if ($comment->getRecette() === $this) {
                 $comment->setRecette(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ingredient>
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(Ingredient $ingredient): static
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
+            $ingredient->setRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(Ingredient $ingredient): static
+    {
+        if ($this->ingredients->removeElement($ingredient)) {
+            if ($ingredient->getRecette() === $this) {
+                $ingredient->setRecette(null);
             }
         }
 

@@ -1,33 +1,35 @@
 .recettes {
 
   h2 {
-    font-size: 1.2rem;
-    text-align: center;
-    font-weight: bold;
+    font-size: 1.5rem;
     margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   p {
     text-align: center;
     margin: 1rem 0;
   }
   .btn-add {
-    padding: .2rem .5rem;
+    color: var(--txt1);
     margin-right: 1rem;
+    width: 2rem;
+    height: 2rem;
   }
   .recettes-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
     margin-top: 3rem;
-    border-radius: 1rem;
 
     .recette {
-      border: 1px solid var(--black-in-light);
-      box-shadow: 0 0 5px 1px var(--black-in-light);
+      border: 1px solid var(--black);
+      box-shadow: 0 0 5px 3px var(--black);
       background-color: var(--bg1);
-      border-radius: 1rem;
+      border-radius: .2rem;
       max-width: 18rem;
       padding: 1rem;
 
@@ -37,6 +39,7 @@
         margin: 1rem;
 
         svg {
+          color: var(--txt1);
           width: 1.5rem;
           height: 1.5rem;
         }
@@ -49,6 +52,9 @@
         width: 16rem;
         height: 10rem;
         border-radius: .5rem;
+      }
+      textarea {
+        max-width: 80%;
       }
     }
   }

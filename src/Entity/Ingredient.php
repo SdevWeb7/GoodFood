@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\IngredientRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,14 +24,9 @@ class Ingredient
    #[Groups(['api:show:user', 'api:show:recette', 'api:show:ingredient'])]
    private ?string $quantity = null;
 
-   #[ORM\ManyToMany(targetEntity: Recette::class, mappedBy: 'ingredients')]
-   #[Groups(['api:show:ingredient'])]
-   private Collection $recettes;
-
-   public function __construct()
-   {
-       $this->recettes = new ArrayCollection();
-   }
+   #[ORM\ManyToOne(inversedBy: 'ingredients')]
+   #[Groups(['api:show:user', 'api:show:ingredient'])]
+   private ?Recette $recette = null;
 
 
    public function getId(): ?int
@@ -60,34 +53,17 @@ class Ingredient
       return $this;
    }
 
-   /**
-    * @return Collection<int, Recette>
-    */
-   public function getRecettes(): Collection
+   public function getRecette(): ?Recette
    {
-       return $this->recettes;
+       return $this->recette;
    }
 
-   public function addRecette(Recette $recette): static
+   public function setRecette(?Recette $recette): static
    {
-       if (!$this->recettes->contains($recette)) {
-           $this->recettes->add($recette);
-           $recette->addIngredient($this);
-       }
+       $this->recette = $recette;
 
        return $this;
    }
-
-   public function removeRecette(Recette $recette): static
-   {
-       if ($this->recettes->removeElement($recette)) {
-           $recette->removeIngredient($this);
-       }
-
-       return $this;
-   }
-
-
 
 
 }

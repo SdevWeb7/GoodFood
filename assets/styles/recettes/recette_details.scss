@@ -4,22 +4,17 @@
   align-items: center;
   gap: 1rem;
 
-  * {font-family: Montserrat!important;}
+  h1 {
+    margin: 1rem 0;
+  }
   hr {
     height: 1px;
     width: 100%;
-    background-color: black;
+    background-color: var(--black);
+    color: var(--black);
   }
-  h1 {
-    margin: 0;
-    font-weight: bolder;
-  }
-  h2 {
-    font-size: 1.5rem;
-    font-weight: bolder;
-  }
+
   p {
-    margin: 0;
     text-align: center;
     font-size: 1.2rem;
   }
@@ -27,5 +22,12 @@
   img {
     width: 20rem;
     height: 13rem;
+  }
+}
+@media only screen and (max-width: 450px) {
+  .recette-details {
+    h1 {
+      margin: 0;
+    }
   }
 }

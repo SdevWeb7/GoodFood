@@ -25,12 +25,13 @@ export function LikesModal ({likes, setLikesModal}) {
 
    return createPortal(
       <section ref={ref} className="modal-comments">
+
          <p className={'close'}>
             <IconClose onClick={() => setLikesModal(false)} />
          </p>
 
-         {likes.map(l => <p key={uuidv4()}>{l.user ? l.user.email : ''}</p>)}
-
+         {likes.map(l => <p key={uuidv4()}>
+            {l.user ? l.user.email : ''}</p>)}
 
       </section>,
       document.body)

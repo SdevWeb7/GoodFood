@@ -5,6 +5,7 @@ import { burgerVariants, closeVariants } from "../utils";
 import { Menu } from "./Menu";
 import { useAppStore } from "../store";
 import { IconClose } from "../svg/IconClose";
+import { Apple } from "../svg/Apple";
 
 export function Burger () {
    const isOpenMenu = useAppStore.use.isOpenMenu()
@@ -20,33 +21,39 @@ export function Burger () {
 
    return (
       <>
-      <div className="burger" onClick={handleMenu}>
+      <section
+         className="burger"
+         onClick={handleMenu}>
 
          <AnimatePresence mode={'popLayout'}>
             {isOpenMenu &&
-               <motion.div
+               <motion.a
+                  href="#"
+                  onClick={e => e.preventDefault()}
                   initial={"hidden"}
                   exit={'hidden'}
                   animate={isOpenMenu ? 'visible' : "hidden"}
                   variants={closeVariants}
                   transition={{duration: .5}}>
                   <IconClose />
-               </motion.div>}
+               </motion.a>}
          </AnimatePresence>
 
          <AnimatePresence mode={'popLayout'}>
             {!isOpenMenu &&
-               <motion.div
+               <motion.a
+                  href={'#'}
+                  onClick={e => e.preventDefault()}
                   initial={initialLoad ? 'visible' : "hidden"}
                   exit={'hidden'}
                   animate={isOpenMenu ? 'hidden' : "visible"}
                   variants={burgerVariants}
                   transition={{duration: .5}}>
-                  🍅
-               </motion.div>}
+                  <Apple />
+               </motion.a>}
          </AnimatePresence>
 
-      </div>
+      </section>
 
 
       <AnimatePresence>

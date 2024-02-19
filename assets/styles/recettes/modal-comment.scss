@@ -1,14 +1,14 @@
 .modal-comments {
   position: fixed;
   inset: 20%;
-  border: 1px solid var(--black-in-light);
-  box-shadow: 0 0 3px 1px var(--black-in-light);
+  border: 1px solid var(--black);
+  box-shadow: 0 0 5px 3px var(--black);
   background-color: var(--bg1);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow-x: scroll;
+  overflow-y: scroll;
   overflow-x: hidden;
   padding: 2rem;
   z-index: 1002;

@@ -9,9 +9,10 @@ import { Fader } from "../components/Fader";
 export function ReinitPassword () {
 
    const { token } = useParams()
-   const {register, handleSubmit, formState: {isValid, isSubmitting, errors}} = useForm({
-      mode: 'onBlur',
-      resolver: yupResolver(reinitPasswordSchema)
+   const {register, handleSubmit,
+      formState: {isValid, isSubmitting, errors}} = useForm({
+         mode: 'onBlur',
+         resolver: yupResolver(reinitPasswordSchema)
    })
 
    const onSubmit = (data) => {

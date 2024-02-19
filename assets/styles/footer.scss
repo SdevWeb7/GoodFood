@@ -9,12 +9,20 @@
   align-items: center;
   color: var(--txt2);
   background-color: var(--bg2);
-  border-top: 1px solid var(--black-in-light);
-  box-shadow: 0 0 3px 1px var(--black-in-light);
+  border-top: 1px solid var(--black);
+  box-shadow: 0 0 5px 3px var(--black);
 
+  .stripe-don {
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-right: .5rem;
+    }
+  }
 
   .btn-theme {
-    box-shadow: 0 0 5px 1px var(--txt2);
+    box-shadow: 0 0 5px 1px var(--black-in-light);
     width: 2.2rem;
     height: 1.3rem;
     border-radius: 10rem;
@@ -22,19 +30,15 @@
     align-items: center;
     cursor: pointer;
 
-    &[data-isdark="true"] {
-      justify-content: right;
-    }
-
-    div:nth-child(1) {
-      opacity: .7;
+    .switcher {
       margin: 0 .2rem;
       height: 1rem;
       width: 1rem;
       background-color: var(--txt2);
       border-radius: 50%;
-
-      &:hover {opacity: 1;}
+    }
+    &[data-isdark="true"] {
+      justify-content: right;
     }
   }
 }

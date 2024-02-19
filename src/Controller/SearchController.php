@@ -26,18 +26,16 @@ class SearchController extends AbstractController
    #[Route('/api_search_ingredient/{name}', name: 'app_search_ingredient')]
    public function search(string $name, IngredientRepository $ingredientRepository): Response
    {
-      $ingredient = $ingredientRepository
+      $ingredients = $ingredientRepository
                ->createQueryBuilder('i')
                ->andWhere('i.name LIKE :name')
                ->setParameter('name', '%'.$name.'%')
-               ->setMaxResults(1)
+               ->setMaxResults(8)
                ->getQuery()
                ->getResult();
 
-      if ($ingredient) {
-         return $this->json($ingredient, 200, [], ['groups' => 'api:show:ingredient']);
-      } else {
-         return $this->json([]);
-      }
+
+      return $this->json($ingredients, 200, [], ['groups' => 'api:show:ingredient']);
+
    }
 }

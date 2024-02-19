@@ -1,16 +1,13 @@
 
-Points à travailler:
+Points à travailler :
 
-- validation image coté back
 
-- bug apres ajout de commentaire il ne s'affiche pas dans la modal avant rafraichissement (à vérifier pour LikeModal)
+- Mettre en place ReactQuery
 
--  selectedImage bug si on supprime et remet une image
+- validation image recette coté back
 
-- Store global pour recettes ?
-
+- Relation Ingredients/Recettes a revoir
 - Recherche par ingrédient
 
-- Bug de css dans les modal Like et Comment
 
-- Les routes imbriqués qui ne fonctionne que par les navlink et pas au rafraichissement
+- Les routes imbriquées (/exemple/2) ne fonctionnent que par les Navlinks (route symfony introuvable au rafraichissement ou exemple le lien dans l'email de validation d'email)

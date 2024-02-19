@@ -7,9 +7,10 @@ import { Fader } from "../components/Fader";
 
 export function ResetPassword () {
 
-   const {register, handleSubmit, formState: {isValid, isSubmitting, errors}} = useForm({
-      mode: 'onBlur',
-      resolver: yupResolver(resetPasswordSchema)
+   const {register, handleSubmit,
+      formState: {isValid, isSubmitting, errors}} = useForm({
+         mode: 'onBlur',
+         resolver: yupResolver(resetPasswordSchema)
    })
 
    const onSubmit = (data) => {
@@ -31,11 +32,18 @@ export function ResetPassword () {
          <h1>Réinitialisation du mot de passe</h1>
 
 
-         <input placeholder={'Email Address'} {...register("email", { required: true })} autoComplete={'current-email'} />
+         <input
+            placeholder={'Email Address'}
+            {...register("email", { required: true })}
+            autoComplete={'current-email'} />
          {errors.email && <span>{errors.email.message}</span>}
 
 
-         <input type={"submit"} className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} onClick={handleSubmit(onSubmit)} value={'Faire la demande'} />
+         <input
+            type={"submit"}
+            value={'Faire la demande'}
+            onClick={handleSubmit(onSubmit)}
+            className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} />
 
       </form>
       </Fader>

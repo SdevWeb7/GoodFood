@@ -9,7 +9,9 @@ export function Toaster () {
    const [toasts, setToasts] = useState([])
 
    useEffect(() => {
-      const flashsSymfony = JSON.parse(document.getElementById('react').getAttribute('data-toasts'))
+      const flashsSymfony = JSON.parse(
+         document.getElementById('react').getAttribute('data-toasts'))
+
       if (flashsSymfony && flashsSymfony.length > 0) {
          setToasts((prevToasts) => [...prevToasts, ...flashsSymfony]);
       }
@@ -46,7 +48,8 @@ export function Toaster () {
                animate={toasts.length > 0 ? 'visible' : 'hidden'}
                variants={toasterVariants}
                exit={'hidden'}
-               initial={'hidden'}>
+               initial={'hidden'}
+               transition={{duration: .3}}>
 
                <IconClose onClick={() => setToasts([])} />
 
