@@ -30,10 +30,13 @@ export function RecetteDetails () {
 
          {Object.entries(recette).length > 0 ?
          <><h1>{recette.name}</h1>
-            <LikeDetails recette={recette} setRecette={setRecette} />
-            <p>{recette.description}</p>
-            <hr/>
 
+            <p>{recette.description}</p>
+
+            <LikeDetails
+               recette={recette}
+               setRecette={setRecette} />
+            <hr/>
             <img
                src={recette.image ?
                   `/images/recettes/${recette.image}` :

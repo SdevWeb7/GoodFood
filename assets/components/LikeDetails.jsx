@@ -49,7 +49,7 @@ export function LikeDetails ({recette, setRecette}) {
          <p
             style={{marginRight: '1rem', cursor: 'pointer'}}
             onClick={handleModal}>
-            {recette.likes.length} like(s)</p>
+            <u>{recette.likes.length} like(s)</u></p>
 
 
          {user && recette.likes.some(like => like.user.email === user.email) ?

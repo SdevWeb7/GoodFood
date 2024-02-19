@@ -6,8 +6,7 @@ Points à travailler :
 
 - validation image recette coté back
 
-- Relation Ingredients/Recettes a revoir
-- Recherche par ingrédient
+- Créer Page Recherche
 
 
 - Les routes imbriquées (/exemple/2) ne fonctionnent que par les Navlinks (route symfony introuvable au rafraichissement ou exemple le lien dans l'email de validation d'email)

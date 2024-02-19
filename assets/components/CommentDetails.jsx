@@ -44,7 +44,7 @@ export function CommentDetails ({recette, setRecette}) {
             <p
                style={{marginBottom: '1rem', cursor: 'pointer'}}
                onClick={handleModal}>
-               {recette.comments.length} commentaire(s)</p>
+               <u>{recette.comments.length} commentaire(s)</u></p>
 
             <textarea
                name="comment"
