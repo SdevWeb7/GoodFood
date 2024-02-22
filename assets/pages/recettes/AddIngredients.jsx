@@ -31,7 +31,7 @@ export function AddIngredients ({ingredients, setIngredients}) {
    };
 
    return (
-      <><label htmlFor="ingredients">Ingrédients de la recette (eg. Eau 1L</label>
+      <><label htmlFor="ingredients">Ingrédients de la recette (eg. Eau 1L)</label>
 
       <div id={"ingredients"} className="ingredients">
          <div className="add-ingredient">

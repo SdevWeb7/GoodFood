@@ -26,7 +26,7 @@ export function Recettes () {
 
    else return <section className={'recettes'}>
          <h1>Recettes</h1>
-         <h2>{data.totalRecettes} recettes (Page {page} / {Math.ceil(data.totalRecettes / perPage)})</h2>
+         <h2>{data.totalRecettes} recettes (Page {data.recettes.length > 0 ? page : 0} / {Math.ceil(data.totalRecettes / perPage)})</h2>
 
 
          <Paginator
