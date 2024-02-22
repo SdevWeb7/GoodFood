@@ -21,7 +21,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
-   #[Route('/register', name: 'api_register', methods: ['POST'])]
+   #[Route('/api_register', name: 'api_register', methods: ['POST'])]
    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginFormAuthenticator $authenticator, EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator, MessageBusInterface $bus): Response
    {
       $user = $serializer->deserialize($request->getContent(), User::class, 'json');
@@ -40,7 +40,7 @@ class RegistrationController extends AbstractController
          foreach ($violations as $violation) {
             $errors[$violation->getPropertyPath()] = $violation->getMessage();
          }
-         return $this->json([$errors]);
+         return $this->json($errors);
       }
 
       $entityManager->persist($user);

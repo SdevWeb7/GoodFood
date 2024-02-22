@@ -1,57 +1,48 @@
 import React, { useEffect, useState } from "react";
-import eventBus from "../../hooks/EventBus";
 import { v4 as uuidv4 } from 'uuid';
 import { NavLink } from "react-router-dom";
 import { Paginator } from "../../components/Paginator";
 import { Like } from "../../components/Like";
 import { Comment } from "../../components/Comment";
+import { useQuery } from "react-query";
+import { apiShowRecettes } from "../../ApiFunctions";
+import { Spinner } from "../../components/Spinner";
 
 export function Recettes () {
-   const [recettes, setRecettes] = useState([])
    const [page, setPage] = useState(1)
-   const [totalRecettes, setTotalRecettes] = useState(0)
-   const [nombrePages, setNombrePages] = useState(0)
    const [perPage, setPerPage] = useState(6)
+   const { data, refetch, isFetching, isError} = useQuery(['recettes'],
+      () => apiShowRecettes(page, perPage))
 
    useEffect(() => {
-      fetch(`/api_recettes/${page}/${perPage}`).then(r => {
-         if (!r.ok) {
-            eventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
-            throw new Error('Problème serveur')
-         }
-         return r.json()
-      }).then(datas => {
-         if (Object.entries(datas).length > 0) {
-            setRecettes(datas.recettes)
-            setTotalRecettes(datas.totalRecettes)
-            setNombrePages(Math.ceil(datas.totalRecettes / perPage))
-         }
-      }).catch(e => console.log(e))
+      refetch()
    }, [page])
 
+   if (isFetching) return <Spinner />
 
+   if (isError) return <h1>Il y a eu une erreur
+                        <button onClick={() => refetch()}>
+                           Réessayer</button></h1>
 
-   return (
-      <section className={'recettes'}>
+   else return <section className={'recettes'}>
          <h1>Recettes</h1>
-         <h2>{totalRecettes} recettes (Page {page} / {nombrePages})</h2>
+         <h2>{data.totalRecettes} recettes (Page {page} / {Math.ceil(data.totalRecettes / perPage)})</h2>
 
 
          <Paginator
             page={page}
             setPage={setPage}
-            nombrePages={nombrePages} />
+            nombrePages={Math.ceil(data.totalRecettes / perPage)} />
 
 
          <div className="recettes-container">
-         {recettes.length > 0 ? recettes.map(recipe =>
+         {data.recettes.length > 0 ? data.recettes.map(recipe =>
             <article
                key={uuidv4()}
                className={'recette'}>
 
                <Like
                   className={'like'}
-                  setRecettes={setRecettes}
                   recipe={recipe} />
 
                <p className={'title'}>{recipe.name}</p>
@@ -67,12 +58,9 @@ export function Recettes () {
 
                <p>Créé par {recipe.user ? recipe.user.email : 'Anonyme'}</p>
 
-               <Comment
-                  recette={recipe}
-                  setRecettes={setRecettes} />
+               <Comment recette={recipe} />
 
             </article>) : <p>Aucune Recette, ajoutez-en !</p>}
          </div>
       </section>
-   )
 }

@@ -1,43 +1,27 @@
 import React, { useState } from "react";
-import eventBus from "../hooks/EventBus";
 import { CommentsModal } from "./CommentsModal";
-import { useAppStore } from "../store";
+import { useMutation, useQueryClient } from "react-query";
+import { apiComment } from "../ApiFunctions";
+import EventBus from "../hooks/EventBus";
 
-export function Comment ({recette, setRecettes}) {
+export function Comment ({recette}) {
 
-   const user = useAppStore.use.user()
    const [comment, setComment] = useState('')
    const [modalComments, setModalComments] = useState(false)
+   const queryClient = useQueryClient()
+   const { mutate } = useMutation(() => apiComment(recette.id, comment), {
+      onSuccess: datas => {
+         if (datas.success) {
+            EventBus.emit('ToastMessage', [{type: 'success', messages: [datas.success]}])
+            queryClient.invalidateQueries(['recettes'])
+         }
+         else if (datas.error) EventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
+      },
+      onError: () => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
+   })
 
    const addComment = () => {
-      if (comment.length > 4) {
-         fetch(`/api_comment/${recette.id}`, {
-            method: 'POST',
-            body: comment
-         })
-            .then(r => {
-               if (!r.ok) {
-                  eventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
-                  throw new Error('Problème serveur')
-               }
-               return r.json()
-         }).then(datas => {
-            if (datas.error) {
-               eventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
-               throw new Error('Problème serveur')
-            } else if (datas.success) {
-               eventBus.emit('ToastMessage', [{type: 'success', messages: [datas.success]}])
-               setComment('')
-               setRecettes(prevRecettes => prevRecettes.map(r => {
-                  if (r.id === recette.id) {
-                     recette.comments.push({recette: recette, user: {email: user.email}})
-                  }
-                  return r
-               }))
-
-            }
-         }).catch(e => console.log(e))
-      }
+      if (comment.length > 4) mutate()
    };
    const handleModal = (e) => {
       e.preventDefault()

@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useAppStore } from "./store";
 import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
 import { Layout } from "./pages/Layout";
@@ -15,16 +14,10 @@ import { RecetteDetails } from "./pages/recettes/RecetteDetails";
 import { RecetteEdit } from "./pages/recettes/RecetteEdit";
 import { RecetteNew } from "./pages/recettes/RecetteNew";
 
+
 function App () {
 
-   const updateUser = useAppStore.use.updateUser()
-
-   useEffect(() => {
-      fetch('/api_me').then(r => r.json()).then(d => updateUser(d))
-   }, [])
-
-   return (
-      <BrowserRouter>
+   return <BrowserRouter>
          <Routes>
             <Route path={'/'} element={<Layout />}>
                <Route path={''} element={<Home />} />
@@ -43,6 +36,5 @@ function App () {
 
          </Routes>
       </BrowserRouter>
-   )
 }
 export default App;

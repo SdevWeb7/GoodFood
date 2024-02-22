@@ -7,8 +7,7 @@ export function Home () {
    return (
       <section className={'home'}>
 
-         <Fader>
-         <h1>Découvre gratuitement toutes les recettes de la communauté Good-Food!</h1>
+         <Fader><h1>Découvre gratuitement toutes les recettes de la communauté Good-Food!</h1>
 
          <h2>Crée un compte pour créer/partager tes recettes et liker/commenter celles des autres.</h2>
 
@@ -19,8 +18,7 @@ export function Home () {
             <Link
                to={'/subscribe'}
                className="btn">S'inscrire</Link>
-         </nav>
-         </Fader>
+         </nav></Fader>
 
       </section>)
 }

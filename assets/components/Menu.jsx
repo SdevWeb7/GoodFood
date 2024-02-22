@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import { linksVariants } from '../utils'
 import { createPortal } from "react-dom";
 import { useAppStore } from "../store";
+import { useQuery } from "react-query";
+import { apiMe } from "../ApiFunctions";
 
 export function Menu () {
-   const user = useAppStore.use.user()
+   const { data: user } = useQuery(['user'], () => apiMe())
    const setOpenMenu = useAppStore.use.setOpenMenu()
 
    useEffect(() => {

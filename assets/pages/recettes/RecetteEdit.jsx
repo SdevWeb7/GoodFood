@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import eventBus from "../../hooks/EventBus";
 import { Spinner } from "../../components/Spinner";
-import { useAppStore } from "../../store";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { recetteSchemas } from "../../FormSchemas";
@@ -9,25 +7,27 @@ import { AddIngredients } from "./AddIngredients";
 import { useParams } from "react-router-dom";
 import EventBus from "../../hooks/EventBus";
 import { Add } from "../../svg/Add";
+import { useMutation, useQuery } from "react-query";
+import { apiMe, apiShowRecette, apiUpdateRecette } from "../../ApiFunctions";
 
 export function RecetteEdit () {
    const { id } = useParams()
-   const user = useAppStore.use.user()
-   const [recette, setRecette] = useState({})
+   const { data: user } = useQuery(['user'], apiMe)
+   const { data: recette } = useQuery(['recette', id], () => apiShowRecette(id))
    const { register, handleSubmit, formState: {errors, isSubmitting, isValid}, setValue } = useForm({
       mode: 'onBlur',
       resolver: yupResolver(recetteSchemas)
    })
+   const { mutate } = useMutation(apiUpdateRecette, {
+      onSuccess: datas => {
+         if (datas.error) EventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
+         else window.location.href = '/mes-recettes'
+      },
+      onError: () => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
+   })
    const [ingredients, setIngredients] = useState([])
    const [selectedImage, setSelectedImage] = useState(null)
 
-
-   useEffect(() => {
-      if (user && user.recettes) {
-         setRecette(
-            user.recettes.filter(r => r.id == id)[0])
-      }
-   }, [])
 
    useEffect(() => {
       if (recette) {
@@ -43,7 +43,6 @@ export function RecetteEdit () {
                .then(r => r.blob())
                .then(b => setSelectedImage(
                   new File([b], 'image.png', {type: 'image/png'})))
-
          }
       }
    }, [recette])
@@ -67,25 +66,7 @@ export function RecetteEdit () {
       }))
       formData.append('ingredients', JSON.stringify(ingredients))
 
-      fetch(`/api_update_recette/${id}`, {
-         method: 'POST',
-         body: formData
-      }).then(r => {
-         if (!r.ok) {
-            eventBus.emit('ToastMessage', [{type: 'error', messages: ['erreur']}])
-            throw new Error('Problème serveur')
-         }
-         return r.json()
-      }).then(datas => {
-            if (datas.error) {
-               eventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
-               throw new Error(datas.error)
-            }
-            if (Object.entries(datas).length === 0) {
-               window.location = '/mes-recettes'
-            }
-         })
-         .catch(e => console.log(e))
+      mutate({id: id, formData: formData})
    };
 
    const handleImage = (e) => {
@@ -97,14 +78,13 @@ export function RecetteEdit () {
    }
 
 
-   if (user === null) {
-      return <Spinner />
-   } else if (Object.keys(user).length === 0) {
-      window.location = '/'
-   } else {
-      return (
-         <><h1 style={{marginBottom: 0}}>Edition de {recette ? recette.name : ''}</h1>
-            <form
+   if (user === undefined) return <Spinner />
+
+   else if (Object.keys(user).length === 0) window.location = '/'
+
+   else return <><h1 style={{marginBottom: 0}}>Edition de {recette ? recette.name : ''}</h1>
+
+         <form
                onSubmit={handleSubmit(onSubmit)}
                className={'recette-edit'}
                encType={'multipart/form-data'}>
@@ -114,7 +94,7 @@ export function RecetteEdit () {
                   id={'name'}
                   placeholder={'Nom de la recette'}
                   {...register("name", { required: true })}
-                  defaultValue={recette.name} />
+                  defaultValue={recette ? recette.name : ''} />
                {errors.name && <span>{errors.name.message}</span>}
 
 
@@ -124,7 +104,7 @@ export function RecetteEdit () {
                   id={'description'}
                   placeholder={'Description de la recette'}
                   {...register("description", { required: true })}
-                  defaultValue={recette.description} />
+                  defaultValue={recette ? recette.description : ''} />
                {errors.description && <span>{errors.description.message}</span>}
 
 
@@ -133,7 +113,7 @@ export function RecetteEdit () {
                   id={"process"}
                   placeholder={'Process de la recette'}
                   {...register("process", { required: true })}
-                  defaultValue={recette.process} />
+                  defaultValue={recette ? recette.process : ''} />
                {errors.process && <span>{errors.process.message}</span>}
 
 
@@ -143,7 +123,7 @@ export function RecetteEdit () {
                   type={'number'}
                   placeholder={'Durée de la recette'}
                   {...register("duration", { required: true })}
-                  defaultValue={recette.duration} />
+                  defaultValue={recette ? recette.duration : ''} />
                {errors.duration && <span>{errors.duration.message}</span>}
 
 
@@ -152,7 +132,7 @@ export function RecetteEdit () {
                   id={'more'}
                   placeholder={'Informations complémentaires de la recette'}
                   {...register("more", { required: true })}
-                  defaultValue={recette.more} />
+                  defaultValue={recette ? recette.more : ''} />
                {errors.more && <span>{errors.more.message}</span>}
 
 
@@ -181,6 +161,5 @@ export function RecetteEdit () {
                   type={"submit"}
                   className={`btn submit ${!isValid || isSubmitting ? 'btn-disabled' : ''}` }
                   value={'Modifier la recette'} />
-            </form></>)
-   }
+            </form></>
 }

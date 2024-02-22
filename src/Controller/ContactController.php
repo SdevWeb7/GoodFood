@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends AbstractController
 {
-    #[Route('/api_contact', name: 'api_contact')]
+    #[Route('/api_contact', name: 'api_contact', methods: ['POST'])]
     public function index(Request $request, MailerInterface $mailer): JsonResponse
     {
        try {

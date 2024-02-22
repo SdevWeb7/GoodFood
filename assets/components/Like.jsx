@@ -1,54 +1,38 @@
 import React, { useState } from "react";
-import eventBus from "../hooks/EventBus";
 import { HeartArrowFilled } from "../svg/HeartArrowFilled";
 import { HeartArrow } from "../svg/HeartArrow";
-import { useAppStore } from "../store";
 import { LikesModal } from "./LikesModal";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { apiLike, apiMe } from "../ApiFunctions";
+import EventBus from "../hooks/EventBus";
 
-export function Like ({setRecettes, recipe}) {
-   const user = useAppStore.use.user()
+export function Like ({recipe}) {
+   const { data: user } = useQuery(['user'], () => apiMe())
    const [likesModal, setLikesModal] = useState(false)
+   const queryClient = useQueryClient()
+   const { mutate } = useMutation(apiLike, {
+      onSuccess: data => {
+         if (data.success) {
+            EventBus.emit('ToastMessage', [{type: 'success', messages: ['Merci d\'avoir liké']}])
+            queryClient.invalidateQueries(['recettes'])
+         }
+         else if (data.info) {
+            EventBus.emit('ToastMessage', [{type: 'info', messages: [data.info]}])
+            queryClient.invalidateQueries(['recettes'])
+         }
+         else if (data.error) EventBus.emit('ToastMessage', [{type: 'error', messages: [data.error]}])
+      },
+      onError: () => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
+   })
 
-   const handleLike = (id) => {
-      fetch(`/api_like/${id}`).then(r => {
-         if (!r.ok) {
-            eventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
-            throw new Error('Problème serveur')
-         }
-         return r.json()
-      }).then(datas => {
-         if (datas.error) {
-            eventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
-            throw new Error('Problème serveur')
-         }
-         if (datas.success) {
-            eventBus.emit('ToastMessage', [{type: 'success', messages: [datas.success]}])
-            setRecettes(prevRecettes => {
-               return prevRecettes.map(r => {
-                  if (r.id === id) {
-                     r.likes.push({user: {email: user.email}})
-                  }
-                  return r
-               })
-            })
-         } else {
-            eventBus.emit('ToastMessage', [{type: 'info', messages: [datas.info]}])
-            setRecettes(prevRecettes => {
-               return prevRecettes.map(r => {
-                  if (r.id == id) {
-                     r.likes = r.likes.filter(l => l.user.email !== user.email)
-                  }
-                  return r
-               })
-            })
-         }
-      }).catch(e => console.log(e))
-   }
+   const handleLike = (recetteId) => { mutate(recetteId) }
+
    const handleModal = (e) => {
       e.preventDefault()
       e.stopPropagation()
       setLikesModal(v => !v)
    };
+
 
    return (
       <div className={'like'}>

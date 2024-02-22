@@ -1,41 +1,31 @@
-import React, { useEffect, useState } from "react";
-import eventBus from "../../hooks/EventBus";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import { CommentDetails } from "../../components/CommentDetails";
 import { LikeDetails } from "../../components/LikeDetails";
+import { useQuery } from "react-query";
+import { apiShowRecette } from "../../ApiFunctions";
+import { Spinner } from "../../components/Spinner";
 
 export function RecetteDetails () {
    const { id } = useParams()
-   const [recette, setRecette] = useState({})
-
-   useEffect(() => {
-      fetch(`/api_recette/${id}`, {
-         method: 'POST'
-      }).then(r => {
-         if (!r.ok) {
-            eventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
-            throw new Error('Problème serveur')
-         }
-         return r.json()
-      }).then(datas => {
-            setRecette(datas)
-         })
-         .catch(e => console.log(e))
-   }, [])
+   const {isLoading, isError, data: recette, refetch} = useQuery(
+         ['recettes', id], () => apiShowRecette(id))
 
 
-   return (
-      <section className={'recette-details'}>
+   if (isLoading) return <Spinner />
+
+   else if (isError) return <h1>Il y a eu une erreur
+                              <button onClick={() =>refetch()}>Réessayé</button></h1>
+
+   else return <section className={'recette-details'}>
 
          {Object.entries(recette).length > 0 ?
          <><h1>{recette.name}</h1>
 
             <p>{recette.description}</p>
 
-            <LikeDetails
-               recette={recette}
-               setRecette={setRecette} />
+            <LikeDetails recette={recette} />
             <hr/>
             <img
                src={recette.image ?
@@ -61,11 +51,8 @@ export function RecetteDetails () {
             <p>{recette.user ? recette.user.email : 'Anonyme'}</p>
             <hr/>
 
-            <CommentDetails
-               recette={recette}
-               setRecette={setRecette} /></> :
+            <CommentDetails recette={recette} /></> :
 
             <h1>Recette Introuvable</h1>}
       </section>
-   )
 }

@@ -45,7 +45,7 @@ class LikeController extends AbstractController
        $manager->flush();
 
        if ($mustLike) {
-         return $this->json(['success' => 'Merci d\'avoir liké !']);
+         return $this->json(['success' => $recetteId]);
        }
        return $this->json(['info' => 'Nous sommes désolé que vous n\'appréciez pas la recette']);
 

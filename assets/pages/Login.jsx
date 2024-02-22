@@ -3,51 +3,37 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchemas } from "../FormSchemas";
 import EventBus from "../hooks/EventBus";
-import { useAppStore } from "../store";
 import { Spinner } from "../components/Spinner";
 import { Fader } from "../components/Fader";
 import { NavLink } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
+import { apiLogin, apiMe } from "../ApiFunctions";
 
 export function Login () {
 
-   const user = useAppStore.use.user()
+   const { data: user } = useQuery(['user'], () => apiMe())
    const [symfonyError, setSymfonyError] = useState('')
    const {register, handleSubmit,
       formState: {isValid, isSubmitting, errors}} = useForm({
          mode: 'onBlur',
          resolver: yupResolver(loginSchemas)
    })
+   const { mutate } = useMutation(apiLogin, {
+      onSuccess: datas => {
+         if (datas.error) setSymfonyError(datas.error)
+         else window.location.href = '/'
+      },
+      onError: () => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
+   })
 
-   const onSubmit = (data) => {
-      fetch('/api_login', {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         body: JSON.stringify(data)
-      }).then(r => {
-         if (!r.ok && r.status !== 401) {
-            EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
-         }
-         return r.json()
-      }).then(d => {
-         if (Object.keys(d).length > 0) {
-            setSymfonyError(d.error)
-         } else {
-            window.location.href = '/'
-         }
-      })
-   }
+   const onSubmit = (data) => { mutate(data) }
 
 
-   if (user === null) {
-      return <Spinner />
-   } else if (Object.keys(user).length > 0) {
-      window.location = '/'
-   } else {
+   if (user === undefined) return <Spinner />
 
-      return (<Fader>
-         <form className={'auth-form'}>
+   else if (Object.keys(user).length > 0) window.location = '/'
+
+   else return <Fader><form className={'auth-form'}>
             <h1>Connexion</h1>
 
             {symfonyError.length > 1 && <p>{symfonyError}</p>}
@@ -78,7 +64,6 @@ export function Login () {
                className={'reset-pass'}>
                Mot de passe oublié</NavLink>
 
-         </form></Fader>)
-   }
+         </form></Fader>
 
 }

@@ -4,6 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { resetPasswordSchema } from "../FormSchemas";
 import EventBus from "../hooks/EventBus";
 import { Fader } from "../components/Fader";
+import { useMutation } from "react-query";
+import { apiRequestPassword } from "../ApiFunctions";
 
 export function ResetPassword () {
 
@@ -12,23 +14,17 @@ export function ResetPassword () {
          mode: 'onBlur',
          resolver: yupResolver(resetPasswordSchema)
    })
+   const { mutate } = useMutation(apiRequestPassword, {
+      onSuccess: datas => {
+         if (datas.error) EventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
+         else window.location.href = '/'
+      },
+      onError: () => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
+   })
 
-   const onSubmit = (data) => {
-      fetch('/reset-password', {
-         method: 'POST',
-         body: data.email
-      }).then(r => r.json()).then(d => {
-         if (Object.keys(d).length > 0) {
-            EventBus.emit('ToastMessage', [{type: 'error', messages: [d.error]}])
-         } else {
-            window.location.href = "/"
-         }
-      })
-   }
+   const onSubmit = (data) => { mutate(data) }
 
-   return (
-      <Fader>
-      <form className={'auth-form'}>
+   return <Fader><form className={'auth-form'}>
          <h1>Réinitialisation du mot de passe</h1>
 
 
@@ -45,8 +41,5 @@ export function ResetPassword () {
             onClick={handleSubmit(onSubmit)}
             className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} />
 
-      </form>
-      </Fader>
-   )
-
+      </form></Fader>
 }

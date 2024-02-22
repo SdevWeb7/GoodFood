@@ -1,14 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { NavLink } from "react-router-dom";
-import EventBus from "../hooks/EventBus";
 import { v4 as uuidv4 } from 'uuid';
+import { useQuery, useQueryClient } from "react-query";
+import { apiSearchIngredients, apiSearchRecettes } from "../ApiFunctions";
 
 export function SearchBar ({setSearchOpen}) {
-   const [recettes, setRecettes] = useState([])
    const [search, setSearch] = useState('')
    const [searchIngredient, setSearchIngredient] = useState('')
+   const { data: recettes } = useQuery(['searchRecettes'],
+      () => apiSearchRecettes(search),
+      { enabled: search.length > 1 })
+   const { data: recettesByIngredient } = useQuery(['searchRecettesByIngredient'],
+      () => apiSearchIngredients(searchIngredient),
+      { enabled: searchIngredient.length > 1 })
    const ref = useRef(null)
+   const queryClient = useQueryClient()
 
    useEffect(() => {
       document.addEventListener('click', handleClose)
@@ -21,47 +28,14 @@ export function SearchBar ({setSearchOpen}) {
    useEffect(() => {
       if (search.length > 1) {
          setSearchIngredient('')
-         fetch(`/api_search_recette/${search}`)
-            .then(r => {
-               if (!r.ok) {
-                  EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
-                  throw new Error('Problème serveur')
-               }
-               return r.json()
-            }).then(datas => {
-               if (datas.error) {
-                  EventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
-                  throw new Error('Problème serveur')
-               }
-               setRecettes(datas)
-            })
-            .catch(e => console.log(e))
+         queryClient.setQueriesData(['searchRecettesByIngredient'], [])
       }
    }, [search])
 
    useEffect(() => {
       if (searchIngredient.length > 1) {
          setSearch('')
-         fetch(`/api_search_ingredient/${searchIngredient}`)
-            .then(r => {
-               if (!r.ok) {
-                  EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
-                  throw new Error('Problème serveur')
-               }
-               return r.json()
-            }).then(datas => {
-               if (datas.error) {
-                  EventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
-                  throw new Error('Problème serveur')
-               }
-
-               let tempRecettes = []
-               for (let ingredient of datas) {
-                  tempRecettes.push(ingredient.recette)
-               }
-               setRecettes(tempRecettes)
-            })
-            .catch(e => console.log(e))
+         queryClient.setQueriesData(['searchRecettes'], [])
       }
    }, [searchIngredient])
 
@@ -72,8 +46,7 @@ export function SearchBar ({setSearchOpen}) {
    }
 
 
-   return createPortal(
-         <section ref={ref} className="background-search">
+   return createPortal(<section ref={ref} className="background-search">
 
             <input
                type="text"
@@ -93,16 +66,34 @@ export function SearchBar ({setSearchOpen}) {
 
             <section className="search-result">
 
-            {recettes.length > 0 && recettes.map(r =>
+            {recettes && recettes.length > 0 && recettes.map(r =>
                   <NavLink
                      key={uuidv4()}
                      to={`/recette/details/${r.id}`}
                      onClick={() => setSearchOpen(false)}>
                      {r.name}</NavLink>)}
 
+            {recettesByIngredient && recettesByIngredient.length > 0 && recettesByIngredient.map(i =>
+               <NavLink
+                  key={uuidv4()}
+                  to={`/recette/details/${i.recette.id}`}
+                  onClick={() => setSearchOpen(false)}>
+                  {i.recette.name}</NavLink>)}
 
-            {recettes.length === 0 &&
-               <p>Aucun résultat</p>}
+
+
+               {recettes && recettes.length === 0 &&
+                  (!recettesByIngredient || recettesByIngredient.length === 0) &&
+                  <p>Aucun résultat</p>}
+
+               {recettesByIngredient && recettesByIngredient.length === 0 &&
+                  (!recettes || recettes.length === 0) &&
+                  <p>Aucun résultat</p>}
+
+
+               {!recettes && !recettesByIngredient &&
+                  <p>Rechercher par recette ou par ingrédient</p>}
+
             </section>
          </section>,
       document.body)

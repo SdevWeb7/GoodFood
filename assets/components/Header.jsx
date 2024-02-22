@@ -1,12 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Burger } from "./Burger";
-import { useAppStore } from "../store";
 import { Search } from "./Search";
 import { Cerise } from "../svg/Cerise";
+import { useQuery } from "react-query";
+import { apiMe } from "../ApiFunctions";
 
 export function Header () {
-   const user = useAppStore.use.user()
+   const { data: user } = useQuery(['user'], () => apiMe())
 
    return (
       <header className="header">

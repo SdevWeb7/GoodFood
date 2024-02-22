@@ -2,11 +2,12 @@
 Points à travailler :
 
 
-- Mettre en place ReactQuery
-
-- validation image recette coté back
+- Problème de mutation ReactQuery (obliger d'invalider les requêtes)
 
 - Créer Page Recherche
 
+- validation image recette coté back
+
+- UpdateRecette supprime et recrée une recette
 
 - Les routes imbriquées (/exemple/2) ne fonctionnent que par les Navlinks (route symfony introuvable au rafraichissement ou exemple le lien dans l'email de validation d'email)

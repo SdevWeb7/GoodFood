@@ -1,88 +1,75 @@
 import React, { useEffect, useState } from "react";
-import eventBus from "../../hooks/EventBus";
 import { v4 as uuidv4 } from 'uuid';
 import { NavLink } from "react-router-dom";
-import { useAppStore } from "../../store";
 import { Spinner } from "../../components/Spinner";
 import { Modify } from "../../svg/Modify";
 import { Delete } from "../../svg/Delete";
 import { Paginator } from "../../components/Paginator";
 import { Add } from "../../svg/Add";
+import { useMutation, useQuery } from "react-query";
+import { apiDeleteRecette, apiMe, apiShowMesRecettes } from "../../ApiFunctions";
+import EventBus from "../../hooks/EventBus";
 
 export function MesRecettes () {
-   const user = useAppStore.use.user()
-   const [recettes, setRecettes] = useState([])
+   const { data:user, isError, isFetching } = useQuery(['user'], apiMe)
    const [page, setPage] = useState(1)
-   const [totalRecettes, setTotalRecettes] = useState(0)
-   const [nombrePages, setNombrePages] = useState(0)
    const [perPage, setPerPage] = useState(6)
+   const { data, refetch} = useQuery(['mesRecettes'],
+         () => apiShowMesRecettes(page, perPage), {
+      enabled: !!user})
+   const { mutate } = useMutation(apiDeleteRecette, {
+      onSuccess: datas => {
+         if (datas.error) EventBus.emit('ToastMessage', [{type: "error", messages: [datas.error]}])
+         else EventBus.emit('ToastMessage', [{type: "info", messages: ['Recette supprimée']}])
+      },
+      onError: () => EventBus.emit('ToastMessage', [{type: "error", messages: ['Problème Serveur']}])
+   })
 
    useEffect(() => {
-      fetch(`/api_mes_recettes/${page}/${perPage}`).then(r => {
-         if (!r.ok) {
-            eventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
-            throw new Error('Problème serveur')
-         }
-         return r.json()
-      }).then(datas => {
-         if (Object.entries(datas).length > 0) {
-            setRecettes(datas.recettes)
-            setTotalRecettes(datas.totalRecettes)
-            setNombrePages(Math.ceil(datas.totalRecettes / perPage))
-         }
-      }).catch(e => console.log(e))
+      refetch()
    }, [page])
+
+   if (isFetching) return <Spinner />
+
+   if (isError) return <h1>Il y a eu une erreur
+      <button onClick={() => refetch()}>
+         Réessayer</button></h1>
+
 
    const handleDelete = (e, id) => {
       e.preventDefault()
       if (confirm('Etes-vous sur de vouloir supprimer la recette ?')) {
-         fetch(`/api_delete_recette/${id}`, {
-            method: 'POST'
-         }).then(r => {
-            if (!r.ok) {
-               eventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
-               throw new Error('Problème serveur')
-            }
-            return r.json()
-         }).then(datas => {
-            if (datas.error) {
-               eventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
-               throw new Error('Problème serveur')
-            }
-            setRecettes(recettes.filter(r => r.id !== id))
-         }).catch(e => console.log(e))
+         mutate(id)
       }
    };
 
 
-   if (user === null) {
-      return <Spinner />
-   } else if (Object.keys(user).length === 0) {
-      window.location = '/'
-   } else {
+   if (user === undefined) return <Spinner />
 
-      return (
-         <section className={'recettes'}>
-            <h1>Mes recettes</h1>
-            <h2>
-               <NavLink
-                  to={'/recette/creer'}>
-                  <Add className={'btn-add'} />
-               </NavLink>
-               {totalRecettes} recettes (Page {page} / {nombrePages})
-            </h2>
+   else if (Object.keys(user).length === 0) window.location = '/'
+
+   else return <section className={'recettes'}>
+
+         <h1>Mes recettes</h1>
+         <h2>
+            <NavLink
+               to={'/recette/creer'}>
+               <Add className={'btn-add'} />
+            </NavLink>
+            {data?.totalRecettes ?? 0} recettes (Page {data?.totalRecettes ? page : 0} / {Math.ceil(data?.totalRecettes ? data.totalRecettes / perPage : 0)})
+         </h2>
 
 
-            <Paginator
-               page={page}
-               setPage={setPage}
-               nombrePages={nombrePages} />
+         <Paginator
+            page={page}
+            setPage={setPage}
+            nombrePages={Math.ceil(data?.totalRecettes ? data.totalRecettes / perPage : 0)} />
 
 
-            <div className="recettes-container">
-               {recettes.length > 0 ?
-                  recettes.map(recipe =>
-                     <article key={uuidv4()} className={'recette'}>
+         <section className="recettes-container">
+            {data && data.recettes.length > 0 ?
+               data.recettes.map(recipe =>
+                  <article key={uuidv4()} className={'recette'}>
 
                      <div className="actions">
                         <NavLink
@@ -91,8 +78,7 @@ export function MesRecettes () {
                         </NavLink>
 
                         <NavLink>
-                           <Delete
-                              onClick={e => handleDelete(e, recipe.id)} />
+                           <Delete onClick={e => handleDelete(e, recipe.id)} />
                         </NavLink>
                      </div>
 
@@ -110,7 +96,7 @@ export function MesRecettes () {
                      <p>{recipe.description}</p>
 
                   </article>) : <p>Aucune Recette, ajoutez-en !</p>}
-            </div>
-         </section>)
-   }
+         </section>
+
+      </section>
 }

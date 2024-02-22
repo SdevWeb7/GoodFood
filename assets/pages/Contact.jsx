@@ -4,37 +4,27 @@ import EventBus from "../hooks/EventBus";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { contactSchema } from "../FormSchemas";
+import { useMutation } from "react-query";
+import { apiContact } from "../ApiFunctions";
 
 export function Contact () {
    const [symfonyError, setSymfonyError] = useState('')
    const {register, handleSubmit,
       formState: {isValid, isSubmitting, errors}} = useForm(
          {mode: 'onBlur', resolver: yupResolver(contactSchema)})
+   const { mutate } = useMutation(apiContact, {
+      onSuccess: datas => {
+         if (datas.error) setSymfonyError(datas.error)
+         else window.location.href = '/'
+      },
+      onError: () => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
+   })
 
-   const onSubmit = (data) => {
-      fetch('/api_contact', {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         body: JSON.stringify(data)
-      }).then(r => {
-         if (!r.ok) {
-            EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème serveur']}])
-         }
-         return r.json()
-      }).then(d => {
-         if (Object.keys(d).length > 0) {
-            setSymfonyError(d.error)
-         } else {
-            window.location.href = '/'
-         }
-      })
-   }
+   const onSubmit = (data) => { mutate(data) }
 
 
-   return (
-      <><Fader><form className={'auth-form'}>
+   return <Fader><form className={'auth-form'}>
+
          <h1>Contact</h1>
 
          {symfonyError.length > 1 && <p>{symfonyError}</p>}
@@ -58,6 +48,6 @@ export function Contact () {
             className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`}
             onClick={handleSubmit(onSubmit)}
             value={'Envoyer'} />
-      </form></Fader></>
-   );
+
+      </form></Fader>
 }

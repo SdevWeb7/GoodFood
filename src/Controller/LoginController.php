@@ -11,14 +11,11 @@ class LoginController extends AbstractController
    #[Route(path: '/api_login', name: 'api_login', methods: ['POST'])]
    public function apilogin(): JsonResponse
    {
-      if (!$this->getUser()) {
-         return $this->json(['Erreur de connexion'], 500);
-      }
       $this->addFlash('success', 'Vous êtes connecté!');
       return $this->json([]);
    }
 
-   #[Route(path: '/api_me', name: 'api_me')]
+   #[Route(path: '/api_me', name: 'api_me', methods: ['POST'])]
    public function me(): JsonResponse
    {
       if (!$this->getUser()) {

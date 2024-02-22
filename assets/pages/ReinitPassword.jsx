@@ -5,6 +5,8 @@ import { reinitPasswordSchema } from "../FormSchemas";
 import { useParams } from "react-router-dom";
 import EventBus from "../hooks/EventBus";
 import { Fader } from "../components/Fader";
+import { useMutation } from "react-query";
+import { apiReinitPassword } from "../ApiFunctions";
 
 export function ReinitPassword () {
 
@@ -14,23 +16,17 @@ export function ReinitPassword () {
          mode: 'onBlur',
          resolver: yupResolver(reinitPasswordSchema)
    })
+   const { mutate } = useMutation(apiReinitPassword, {
+      onSuccess: datas => {
+         if (datas.error) EventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
+         else window.location.href = '/'
+      },
+      onError: () => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
+   })
 
-   const onSubmit = (data) => {
-      fetch(`/reset-password/reset/${token}`, {
-         method: 'POST',
-         body: data.password
-      }).then(r => r.json()).then(d => {
-         if (Object.keys(d).length > 0) {
-            EventBus.emit('ToastMessage', [{type: 'error', messages: [d.error]}])
-         } else {
-            window.location.href = '/login'
-         }
-      })
-   }
+   const onSubmit = (data) => { mutate({...data, token: token}) }
 
-   return (
-      <Fader>
-      <form className={'auth-form'}>
+   return <Fader><form className={'auth-form'}>
          <h1>Changement du mot de passe</h1>
 
 
@@ -56,8 +52,5 @@ export function ReinitPassword () {
             value={'Changer le mot de passe'}
             className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} />
 
-      </form>
-      </Fader>
-   )
-
+      </form></Fader>
 }

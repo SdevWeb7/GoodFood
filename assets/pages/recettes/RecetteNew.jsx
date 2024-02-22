@@ -1,22 +1,29 @@
 import React, { useState } from "react";
-import eventBus from "../../hooks/EventBus";
 import { Spinner } from "../../components/Spinner";
-import { useAppStore } from "../../store";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { recetteSchemas } from "../../FormSchemas";
 import { AddIngredients } from "./AddIngredients";
 import EventBus from "../../hooks/EventBus";
 import { Add } from "../../svg/Add";
+import { useMutation, useQuery } from "react-query";
+import { apiAddRecette, apiMe } from "../../ApiFunctions";
 
 export function RecetteNew () {
-   const user = useAppStore.use.user()
+   const { data: user } = useQuery(['user'], apiMe)
    const { register, handleSubmit, formState: {errors, isSubmitting, isValid} } = useForm({
       mode: 'onBlur',
       resolver: yupResolver(recetteSchemas)
    })
    const [selectedImage, setSelectedImage] = useState(null)
    const [ingredients, setIngredients] = useState([])
+   const { mutate } = useMutation(apiAddRecette, {
+      onSuccess: datas => {
+         if (datas.error) EventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
+         else window.location.href = '/mes-recettes'
+      },
+      onError: () => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
+   })
 
 
    const onSubmit = (datas) => {
@@ -38,25 +45,8 @@ export function RecetteNew () {
       }))
       formData.append('ingredients', JSON.stringify(ingredients))
 
-      fetch('/api_add_recette', {
-         method: 'POST',
-         body: formData
-      }).then(r => {
-         if (!r.ok) {
-            eventBus.emit('ToastMessage', [{type: 'error', messages: ['erreur']}])
-            throw new Error('Problème serveur')
-         }
-         return r.json()
-      }).then(datas => {
-         if (datas.error) {
-            eventBus.emit('ToastMessage', [{type: 'error', messages: [datas.error]}])
-            throw new Error(datas.error)
-         }
-         if (Object.entries(datas).length === 0) {
-            window.location = '/mes-recettes'
-         }
-         })
-         .catch(e => console.log(e))
+      mutate(formData)
+
    };
    const handleImage = (e) => {
       setSelectedImage(e.target.files[0])
@@ -67,13 +57,11 @@ export function RecetteNew () {
    }
 
 
-   if (user === null) {
-      return <Spinner />
-   } else if (Object.keys(user).length === 0) {
-      window.location = '/'
-   } else {
-      return (
-         <><h1 style={{marginBottom: 0}}>Création d'une recette</h1>
+   if (user === undefined) return <Spinner />
+
+   else if (Object.keys(user).length === 0) window.location = '/'
+
+   else return <><h1 style={{marginBottom: 0}}>Création d'une recette</h1>
          <form
             onSubmit={handleSubmit(onSubmit)}
             className={'recette-edit'}
@@ -143,6 +131,5 @@ export function RecetteNew () {
                type={"submit"}
                className={`btn submit ${!isValid || isSubmitting ? 'btn-disabled' : ''}` }
                value={'Créer la recette'} />
-         </form></>)
-   }
+         </form></>
 }

@@ -4,54 +4,43 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchemas } from "../FormSchemas";
 import EventBus from "../hooks/EventBus";
 import { Spinner } from "../components/Spinner";
-import { useAppStore } from "../store";
 import { Fader } from "../components/Fader";
 import { v4 as uuidv4 } from 'uuid';
+import { useMutation, useQuery } from "react-query";
+import { apiMe, apiRegister } from "../ApiFunctions";
 
 export function Subscribe () {
-   const user = useAppStore.use.user()
-   const [symfonyErrors, setSymfonyErrors] = useState([])
+   const { data: user } = useQuery(['user'], () => apiMe())
+   const [symfonyErrors, setSymfonyErrors] = useState({})
    const {register, handleSubmit,
       formState: {isValid, isSubmitting, errors}} = useForm({
          mode: 'onBlur',
          resolver: yupResolver(registerSchemas)
    })
+   const { mutate } = useMutation(apiRegister, {
+      onSuccess: datas => {
+         if (Object.keys(datas).length > 0) setSymfonyErrors(datas)
+         else window.location.href = '/'
+      },
+      onError: () => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
+   })
 
-   const onSubmit = (data) => {
-      fetch('/register', {
-         method: 'POST',
-         body: JSON.stringify(data)
-      }).then(r => {
-         if (!r.ok) {
-            EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème interne']}])
-            throw new Error('Serveur Error')
-         }
-         return r.json()
-      }).then(d => {
-         if (Object.keys(d).length > 0) {
-            setSymfonyErrors(d)
-         } else {
-            window.location.href = '/'
-         }
-      })
-   }
+   const onSubmit = (data) => { mutate(data) }
 
 
-   if (user === null) {
-      return <Spinner />
-   } else if (Object.keys(user).length > 0) {
-      window.location = '/'
-   } else {
-      return (
-         <Fader>
-         <form className={'auth-form'}>
+   if (user === undefined) return <Spinner />
+
+   else if (Object.keys(user).length > 0) window.location.href = '/'
+
+   else return <Fader><form className={'auth-form'}>
+
             <h1>Inscription</h1>
 
-            {symfonyErrors.map(e => {
-               for (let [key, value] of Object.entries(e)) {
-                  return <p key={uuidv4()}>{key}: {value}</p>
-               }
-            })}
+            {Object.keys(symfonyErrors).length > 0 &&
+               Object.keys(symfonyErrors).map((key) => (
+                  <p key={uuidv4()}>{key}: {symfonyErrors[key]}</p>
+               ))}
+
 
             <input
                placeholder={'Email Address'}
@@ -74,8 +63,5 @@ export function Subscribe () {
                onClick={handleSubmit(onSubmit)}
                className={`btn ${!isValid || isSubmitting ? '' : 'submit-valid'}`} />
 
-         </form>
-         </Fader>
-      )
-   }
+         </form></Fader>
 }
