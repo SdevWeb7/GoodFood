@@ -6,7 +6,7 @@ import EventBus from "../hooks/EventBus";
 import { Spinner } from "../components/Spinner";
 import { Fader } from "../components/Fader";
 import { NavLink } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { apiLogin, apiMe } from "../ApiFunctions";
 
 export function Login () {
@@ -18,12 +18,13 @@ export function Login () {
          mode: 'onBlur',
          resolver: yupResolver(loginSchemas)
    })
+   const queryClient = useQueryClient()
    const { mutate } = useMutation(apiLogin, {
       onSuccess: datas => {
          if (datas.error) setSymfonyError(datas.error)
          else window.location.href = '/'
       },
-      onError: () => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
+      onError: (err, _, context) => EventBus.emit('ToastMessage', [{type: 'error', messages: ['Problème Serveur']}])
    })
 
    const onSubmit = (data) => { mutate(data) }
